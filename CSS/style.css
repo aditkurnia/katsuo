@@ -8,6 +8,10 @@ body {
   background-color: var(--bg);
   scrollbar-width: none;
 }
+*{
+  padding: 0px;
+  margin: 0px;
+}
 
 :root {
   --bg: #f8fafc;
@@ -84,12 +88,17 @@ ul {
 .card {
   width: 150px;
   height: 150px;
-  background-color: black;
+  background-color: transparent;
   border-radius: 5px;
   margin: 12px;
+  padding-top: 0px;
+  text-align: center;
 }
 .container-card {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+}
+img{
+  width: 85%;
 }
