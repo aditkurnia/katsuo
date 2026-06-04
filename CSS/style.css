@@ -6,6 +6,7 @@ body {
   box-sizing: border-box;
   -webkit-user-drag: none;
   background-color: var(--bg);
+  scrollbar-width: none;
 }
 
 :root {
@@ -20,7 +21,7 @@ nav {
   display: flex;
   text-align: center;
   gap: 12px;
-  justify-content: right;
+  justify-content: space-between;
   width: 100;
   align-items: center;
   height: 50px;
@@ -45,17 +46,50 @@ li {
 }
 .container {
   background-color: var(--primary);
-  border-radius: 10px;
   display: flex;
   align-items: center;
   padding: 12px;
-  margin: 24px;
+  margin: 24px auto;
   height: 400px;
-  justify-content: space-around;
+  justify-content: space-evenly;
+}
+.container2 {
+  background-color: var(--primary);
+  padding: 12px;
+  margin: 24px auto;
+  height: 400px;
+  width: auto;
 }
 .gambar1 {
   width: 350px;
 }
+p {
+  color: var(--subtext);
+}
 .bd1 {
   font-size: 1.5em;
+  max-width: 250px;
+}
+ul {
+  display: flex;
+  text-align: center;
+  gap: 12px;
+}
+.nametitle {
+  font-size: 1.5em;
+}
+.hidden {
+  display: none;
+}
+.card {
+  width: 150px;
+  height: 150px;
+  background-color: black;
+  border-radius: 5px;
+  margin: 12px;
+}
+.container-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 }

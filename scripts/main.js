@@ -1,0 +1,33 @@
+const homebtn = document.getElementById("home-btn")
+const skillbtn = document.getElementById("skill-btn")
+const aboutbtn = document.getElementById("about-btn")
+const projectbtn = document.getElementById("project-btn")
+const page1 = document.getElementById("page-1")
+const page2 = document.getElementById("page-2")
+const page3 = document.getElementById("page-3")
+const page4 = document.getElementById("page-4")
+
+homebtn.addEventListener("click", () => {
+page1.classList.remove("hidden")
+page2.classList.add("hidden")
+page3.classList.add("hidden")
+page4.classList.add("hidden")
+})
+skillbtn.addEventListener("click", () => {
+page1.classList.add("hidden")
+page2.classList.remove("hidden")
+page3.classList.add("hidden")
+page4.classList.add("hidden")
+})
+aboutbtn.addEventListener("click", () => {
+page1.classList.add("hidden")
+page2.classList.add("hidden")
+page3.classList.remove("hidden")
+page4.classList.add("hidden")
+})
+projectbtn.addEventListener("click", () => {
+page1.classList.add("hidden")
+page2.classList.add("hidden")
+page3.classList.add("hidden")
+page4.classList.remove("hidden")
+})
