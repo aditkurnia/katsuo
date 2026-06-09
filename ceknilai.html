@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cek Nilai Ujian - Portal Akademik</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      padding: 40px 50px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .logo { font-size: 40px; margin-bottom: 10px; }
+    h2 { font-size: 20px; color: #1a1a2e; margin-bottom: 5px; }
+    p  { font-size: 13px; color: #888; margin-bottom: 28px; }
+
+    input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-bottom: 12px;
+      outline: none;
+    }
+    input:focus { border-color: #4a90e2; }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    button:hover { background: #357abd; }
+
+    .footer-text {
+      margin-top: 16px;
+      font-size: 12px;
+      color: #bbb;
+    }
+
+    /* ── JUMPSCARE OVERLAY ── */
+    #scare {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: black;
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      animation: flashRed 0.08s infinite;
+    }
+    #scare.active { display: flex; }
+    @keyframes flashRed {
+      0%   { background: #000; }
+      50%  { background: #8b0000; }
+      100% { background: #000; }
+    }
+
+    #scare img {
+      max-width: min(90vw, 600px);
+      max-height: 80vh;
+      object-fit: contain;
+      animation: shake 0.1s infinite;
+    }
+    @keyframes shake {
+      0%   { transform: translate(-8px, 4px) rotate(-3deg) scale(1.05); }
+      25%  { transform: translate(8px, -4px) rotate(3deg) scale(1.1); }
+      50%  { transform: translate(-5px, 8px) rotate(-2deg) scale(1.05); }
+      75%  { transform: translate(5px, -8px) rotate(2deg) scale(1.1); }
+      100% { transform: translate(-8px, 4px) rotate(-3deg) scale(1.05); }
+    }
+
+    #scare .scare-text {
+      color: white;
+      font-size: clamp(28px, 6vw, 60px);
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-shadow: 0 0 20px red;
+      margin-top: 20px;
+      animation: shake 0.1s infinite;
+    }
+
+    /* ── AFTER SCARE ── */
+    #after {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: white;
+      z-index: 9998;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
+    }
+    #after.active { display: flex; }
+    #after h1 { font-size: 48px; margin-bottom: 10px; }
+    #after p  { font-size: 20px; color: #555; }
+    #after .small { font-size: 14px; color: #aaa; margin-top: 16px; }
+    #after button {
+      margin-top: 24px;
+      width: auto;
+      padding: 10px 30px;
+      background: #e74c3c;
+    }
+  </style>
+</head>
+<body>
+
+<!-- FAKE LOGIN PAGE -->
+<div class="card">
+  <div class="logo">🎓</div>
+  <h2>Portal Akademik Siswa</h2>
+  <p>Masuk untuk melihat nilai dan jadwal ujian kamu</p>
+
+  <input type="text"     placeholder="NIM / Username" />
+  <input type="password" placeholder="Password" />
+  <button id="loginBtn">Lihat Nilai Saya</button>
+
+  <div class="footer-text">Sistem Informasi Akademik © 2026</div>
+</div>
+
+<!-- JUMPSCARE SCREEN -->
+<div id="scare">
+  <!-- Gambar jumpscare: pakai URL gambar horor/meme kaget -->
+  <img
+    src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Shrek_2_poster.jpg/220px-Shrek_2_poster.jpg"
+    onerror="this.style.display='none'"
+    alt=""
+  />
+  <div class="scare-text">BOOOOO! 👻</div>
+</div>
+
+<!-- AFTER SCARE (reveal) -->
+<div id="after">
+  <h1>😂</h1>
+  <p><strong>KAMU KENA PRANK!</strong></p>
+  <p style="margin-top:8px;color:#888">Selamat, nilaimu... <strong style="color:#e74c3c">KAGET</strong> 💀</p>
+  <div class="small">Dikirim dengan penuh kasih sayang 🥰</div>
+  <button onclick="reset()">🔄 Prank Lagi</button>
+</div>
+
+<!-- AUDIO: suara kaget -->
+<audio id="scareAudio" preload="auto">
+  <!--
+    Ganti src dengan file MP3 kaget kamu!
+    Contoh: src="kaget.mp3"
+    Pakai suara scream, jumpscare, dll.
+  -->
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  const loginBtn   = document.getElementById('loginBtn');
+  const scareEl    = document.getElementById('scare');
+  const afterEl    = document.getElementById('after');
+  const scareAudio = document.getElementById('scareAudio');
+
+  loginBtn.addEventListener('click', triggerScare);
+
+  // Juga bisa trigger saat form di-enter
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') triggerScare();
+  });
+
+  function triggerScare() {
+    // Putar audio kaget
+    scareAudio.currentTime = 0;
+    scareAudio.volume = 1.0;
+    scareAudio.play().catch(() => {});
+
+    // Tampilkan jumpscare
+    scareEl.classList.add('active');
+
+    // Setelah 2.5 detik → tampilkan pesan prank
+    setTimeout(() => {
+      scareEl.classList.remove('active');
+      afterEl.classList.add('active');
+      scareAudio.pause();
+    }, 2500);
+  }
+
+  function reset() {
+    afterEl.classList.remove('active');
+    scareEl.classList.remove('active');
+  }
+</script>
+</body>
+  </html>
+  
