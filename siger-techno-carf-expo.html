@@ -14,14 +14,18 @@
             user-select: none;
         }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <nav
-    class="navbar navbar-expand-sm navbar-dark bg-dark"
+    class="navbar navbar-expand-sm text-dark border-bottom border-dark w-100"
+    style="background: transparent; backdrop-filter: blur(10px); position: fixed; z-index: 9999;"
 >
     <div class="container">
-        <a class="navbar-brand" href="#">SIGER TECNHO-CARF EXPO</a>
+        <a class="navbar-brand " style="font-family: Bebas Neue;" href="#">SIGER TECNHO-CARF EXPO</a>
         <button
             class="navbar-toggler d-lg-none"
             type="button"
@@ -37,10 +41,29 @@
             <ul class="navbar-nav me-auto mt-2 mt-lg-0">
                 <li class="nav-item">
                     <a class="nav-link active" href="#" aria-current="page"
-                        >Home
+                        >Beranda
                         <span class="visually-hidden">(current)</span></a
                     >
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" aria-current="page"
+                        >Tentang
+                        <span class="visually-hidden">(current)</span></a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" aria-current="page"
+                        >Tiket
+                        <span class="visually-hidden">(current)</span></a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" aria-current="page"
+                        >Informasi
+                        <span class="visually-hidden">(current)</span></a
+                    >
+                </li>
+                
                     <div
                         class="dropdown-menu"
                         aria-labelledby="dropdownId"
@@ -54,6 +77,9 @@
                     </div>
                 </li>
             </ul>
+            <form class="d-flex" role="login">
+      <button class="btn btn-outline-warning " type="submit">Daftar</button>
+    </form>
         </div>
     </div>
 </nav>
@@ -63,8 +89,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-white mt-5 pt-5">
-                    <h3>SELAMAT DATANG</h3>
-                    <h1 class="text-warning">SIGER TECNHO-CRAF EXPO</h1>
+                    <h3 class="Oswald">SELAMAT DATANG</h3>
+                    <h1 class="text-warning" style="font-family: Bebas Neue;">SIGER TECNHO-CRAF EXPO</h1>
                     <p>Perayaan inovasi teknologi dan kerajinan budaya Lampung dalam satu panggung. Ratusan UMKM, startup lokal, dan pengrajin terbaik hadir untuk menginspirasi Nusantara.</p>
                 </div>
             </div>
@@ -80,19 +106,21 @@
                 </div>
                 <div class="col-md-6">
                     <h3>SAMBUTAN KEPALA DAERAH</h3>
-                    <h1>LAMPUNG EXPO 2026</h1>
+                    <h1 class="text-warning">LAMPUNG EXPO 2026</h1>
                     <p>Assalamu'alaikum warahmatullahi wabarakatuh. Dengan penuh rasa syukur, kami menyambut kehadiran Siger Techno-Craft Expo 2026 sebagai wujud nyata komitmen Pemerintah Provinsi Lampung dalam mendorong pertumbuhan ekonomi kreatif dan inovasi digital di seluruh pelosok negeri.</p>
                     <p>Expo ini adalah jembatan antara tradisi dan modernitas — mempertemukan kearifan lokal pengrajin Lampung dengan semangat wirausaha generasi muda yang melek teknologi. Kami berharap setiap stan, seminar, dan kolaborasi yang terjalin menjadi benih kemajuan yang berbuah nyata bagi masyarakat.</p>
                     <p>Selamat berpameran, berinovasi, dan menginspirasi. Lampung bangga dengan kalian semua.</p>
-                    <h4>GUBERNUR LAMPUNG</h4>
-                    <h5>PERIODE 2024 - 2029</h5>
+                    <div class='border-start border-5 border-warning'>
+                        <h4 class="ps-3">GUBERNUR LAMPUNG</h4>
+                        <h5 class="ps-3">PERIODE 2024 - 2029</h5>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-        <section class="icon text-center bg-dark text-white pt-3 pb-5">
-            <h3>PEMERAN</h3>
+        <section class="icon text-center bg-dark text-white py-3 py-5">
+            <h3 class="pb-3" style="font-family: JetBrains Mono;">PAMERAN</h3>
             <div id="carouselExampleCaptions" class="carousel slide">
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -101,11 +129,14 @@
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="https://ecentrix.co.id/wp-content/uploads/2021/04/teknologi.jpg" class="d-block w-100" alt="..." style="width: 400px; height: 400px; object-fit: cover;">
+      <img src="https://images.pexels.com/photos/8566470/pexels-photo-8566470.jpeg" class="d-block w-100" alt="..." style="width: 400px; height: 400px; object-fit: cover;">
       <div class="carousel-caption d-none d-md-block">
-        <h5 class="text-primary">TEKNOLOGI</h5>
-        <p>Some representative placeholder content for the first slide.</p>
-      </div>
+        <center>
+
+            <h5>TEKNOLOGI</h5>
+            <p>MENHADIRKAN PAMERAN TEKNOLOGI KARYA ANAK LAMPUNG DAN BANGSA</p>
+          </div>
+        </center>
     </div>
     <div class="carousel-item">
       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzjrjqNTtPB9kySC5-hfbtTnEPiH17TczDTo5cLzwUV16Mfvo0MkE77mU&s=10" class="d-block w-100" alt="..." style="width: 400px; height: 400px; object-fit: cover;">
@@ -117,7 +148,7 @@
     <div class="carousel-item">
       <img src="https://rricoid-assets.obs.ap-southeast-4.myhuaweicloud.com/berita/Bogor/o/1716038554849-Mkanan_Nusantara/ntbi4l90x8yfe36.jpeg" class="d-block w-100" alt="..." style="width: 400px; height: 400px; object-fit: cover;">
       <div class="carousel-caption d-none d-md-block" class="d-block w-100" alt="..." >
-        <h5>KULINER DAN BUADAYA</h5>
+        <h5>KULINER DAN BUDAYA</h5>
         <p>Some representative placeholder content for the third slide.</p>
       </div>
     </div>
@@ -140,39 +171,41 @@
                     <div class="border rounded shadow p-3">
                         <img src="https://i.pinimg.com/1200x/97/b7/06/97b70675258827518667f4b010fff920.jpg" class="w-100">
                         <div class="pt-3">
-                            <h3>Sampel judul berita</h3>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis qui ab quas dignissimos tenetur eaque quis labore! Exercitationem doloribus, ut voluptatibus expedita, dolores asperiores voluptates, odit voluptate libero deleniti mollitia?</p>
+                            <h3>PERSIAPAN SIGER TECNHO-CRAF EXPO 2026</h3>
+                            <p>emerintah Kota Bandar Lampung menggelar rapat koordinasi (rakor) penyelenggaraan Bandar Lampung Expo 2026 guna menyelaraskan rencana, pembagian tugas, serta strategi pelaksanaan kegiatan, Kamis (04/06/2026).<p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div>
-                                            <div class="row mt-2">
-                        <div class="col-md-4">
-                            <img src="https://mitrapol.com/wp-content/uploads/2024/07/Siger-lampung.jpg" class="border rounded shadow p-3" style="width: 150px; height: 150px; object-fit: cover;">
+                                            <div class="row mt-2 border rounded shadow p-3">
+                        <div class="col-md-4 d-flex align-items-center">
+                            <img src="https://mitrapol.com/wp-content/uploads/2024/07/Siger-lampung.jpg" c style="width: 150px; height: 150px; object-fit: cover;">
                         </div>
                         <div class="col-md-8">
-                            <h5>Sampel judul berita</h5>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure iusto architecto beatae nemo! Eos necessitatibus magnam repellat, doloremque quisquam nulla quasi officiis, nihil maxime dignissimos nisi fugit neque est ut.
+                            <h5>Mengenal Siger Lampung, Mahkota Kepala yang Jadi Ikon Lampung</h5>
+                            <p>Siger menjadi salah satu perhiasan dalam pernikahan adat di beberapa daerah seperti Sunda dan Lampung. Hanya saja, pasti beda daerah beda pula bentuknya.</p>
                         </div>
                     </div>
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-md-4">
-                            <img src="https://www.indonesia.travel/contentassets/472c53a309854db0a2ed366a6600dd2e/jcr_content.jpeg" class="w-100 border rounded shadow p-3" style="width: 150px; height: 150px; object-fit: cover;">
+                    <div class="row mt-2 border rounded shadow p-3">
+                        <div class="col-md-4 d-flex align-items-center">
+                            <img src="https://www.indonesia.travel/contentassets/472c53a309854db0a2ed366a6600dd2e/jcr_content.jpeg" style="width: 150px; height: 150px; object-fit: cover;">
                         </div>
                         <div class="col-md-8">
-                            <h5>Sampel judul berita</h5>
-                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsum nobis blanditiis explicabo facere, cum suscipit accusamus, ab debitis qui animi iste ipsam. Dolorum incidunt quis aspernatur iusto hic quos numquam!
+                            <h5>10 TEMPAT WISATA TERBAIK DI LAMPUNG</h5>
+                            <P>Lampung adalah salah satu Provinsi di Indonesia yang terletak di pulau Sumatera dan memiliki beragam tempat wisata mulai dari pantai, taman nasional, dan bahkan menara khas dari daerah Lampung.</P>
                         </div>
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-md-4">
-                            <img src="https://awsimages.detik.net.id/community/media/visual/2023/12/28/tugu-bundaran-gajah-lampung_169.jpeg?w=1200" class="w-100 border rounded shadow p-3" style="width: 150px; height: 150px; object-fit: cover;">
+                    <div class="row mt-2 w-100 border rounded shadow p-3">
+                        <div class="col-md-4 d-flex align-items-center">
+                            <img src="https://awsimages.detik.net.id/community/media/visual/2023/12/28/tugu-bundaran-gajah-lampung_169.jpeg?w=1200"  style="width: 150px; height: 150px; object-fit: cover;">
                         </div>
                         <div class="col-md-8">
-                            <h5>Sampel judul berita</h5>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum quo eveniet, itaque eaque labore quidem impedit non odio eum quasi, molestiae vitae ad earum, iusto officia vel aperiam. Blanditiis, dolorem.
+                            <h5>Sambut HUT ke-344, Pemkot Bandar Lampung Siapkan Street Festival Terbesar Tahun Ini</h5>
+                            <p>
+                                Bandar Lampung – Perayaan Hari Ulang Tahun (HUT) ke-344 Kota Bandar Lampung tahun 2026 dipastikan akan berlangsung lebih semarak. 
+                            </p>
                         </div>
                     </div>
                 </div>
