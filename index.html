@@ -1,1184 +1,454 @@
 <!DOCTYPE html>
-<html lang="id" data-bs-theme="dark" data-lang="id">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Suo — Fullstack & Game Dev</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Adit Kurnia — Developer &amp; Cyber Security Enthusiast</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e14;
+    --bg-raised: #10151d;
+    --bg-inset: #0d1117;
+    --line: #1e2733;
+    --text: #e6edf3;
+    --text-dim: #8b98a5;
+    --text-faint: #5b6773;
+    --accent: #4fd6c4;
+    --accent-soft: rgba(79, 214, 196, 0.12);
+    --accent-2: #e8a23d;
+    --radius: 3px;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  :root:not([data-theme="dark"]) {
+    /* keep dark as the brand default; only invert on explicit light preference below */
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f5f4f0;
+      --bg-raised: #ffffff;
+      --bg-inset: #eceae4;
+      --line: #dcd9d1;
+      --text: #14181d;
+      --text-dim: #565f68;
+      --text-faint: #8a929b;
+      --accent: #0f8f7d;
+      --accent-soft: rgba(15, 143, 125, 0.10);
+      --accent-2: #b9760b;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0a0e14; --bg-raised: #10151d; --bg-inset: #0d1117; --line: #1e2733;
+    --text: #e6edf3; --text-dim: #8b98a5; --text-faint: #5b6773;
+    --accent: #4fd6c4; --accent-soft: rgba(79, 214, 196, 0.12); --accent-2: #e8a23d;
+  }
 
-  <!-- Bootstrap 5.3 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(72px + env(safe-area-inset-top, 0px)); }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  ::selection { background: var(--accent-soft); color: var(--accent); }
 
-  <style>
-    /* ─── Tokens ─── */
-    :root {
-      --accent: #7C3AED;
-      --accent-2: #06B6D4;
-      --font-display: 'Syne', sans-serif;
-      --font-body: 'Inter', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-      --transition: 0.3s ease;
-    }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; }
 
-    /* ─── Dark Mode ─── */
-    [data-bs-theme="dark"] {
-      --bg: #0A0A0F;
-      --bg2: #12121A;
-      --bg3: #1A1A28;
-      --text: #F0F4FF;
-      --text-muted: #94A3B8;
-      --border: rgba(124, 58, 237, 0.25);
-      --card-bg: #12121A;
-      --nav-bg: rgba(10, 10, 15, 0.85);
-    }
+  /* NAV */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    padding-top: env(safe-area-inset-top, 0px);
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { font-family: var(--mono); font-weight: 700; font-size: 15px; letter-spacing: -0.01em; text-decoration: none; color: var(--text); }
+  .brand span { color: var(--accent); }
+  .navlinks { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; font-family: var(--mono); font-size: 13px; }
+  .navlinks a {
+    text-decoration: none; color: var(--text-dim); padding: 8px 12px; border-radius: var(--radius);
+    transition: color .15s ease, background-color .15s ease;
+  }
+  .navlinks a:hover, .navlinks a:focus-visible { color: var(--text); background: var(--bg-raised); }
+  .navlinks a::before { content: '~/'; color: var(--text-faint); }
+  .nav-toggle {
+    display: none; background: none; border: 1px solid var(--line); color: var(--text);
+    width: 38px; height: 38px; border-radius: var(--radius); font-family: var(--mono); font-size: 16px; cursor: pointer;
+  }
 
-    /* ─── Light Mode ─── */
-    [data-bs-theme="light"] {
-      --bg: #F0F4FF;
-      --bg2: #E8EEFF;
-      --bg3: #FFFFFF;
-      --text: #1E1B4B;
-      --text-muted: #64748B;
-      --border: rgba(124, 58, 237, 0.2);
-      --card-bg: #FFFFFF;
-      --nav-bg: rgba(240, 244, 255, 0.9);
-    }
+  @media (max-width: 640px) {
+    .navlinks { position: fixed; inset: 64px 0 auto 0; flex-direction: column; gap: 0;
+      background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px;
+      transform: translateY(-8px); opacity: 0; pointer-events: none; transition: opacity .18s ease, transform .18s ease; }
+    .navlinks.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .navlinks a { display: block; padding: 12px; }
+    .nav-toggle { display: block; }
+  }
 
-    /* ─── Base ─── */
-    *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: var(--font-body);
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-      transition: background var(--transition), color var(--transition);
-      overflow-x: hidden;
-    }
+  /* HERO */
+  .hero { padding: 88px 0 64px; }
+  .prompt-line { font-family: var(--mono); font-size: 13px; color: var(--accent); margin: 0 0 18px; }
+  .prompt-line::before { content: '$ '; color: var(--text-faint); }
+  h1.title {
+    font-family: var(--mono); font-weight: 800; font-size: clamp(32px, 6vw, 52px);
+    line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 18px; max-width: 14ch;
+  }
+  .role { font-size: 18px; color: var(--text-dim); max-width: 52ch; margin: 0 0 28px; }
+  .role strong { color: var(--text); font-weight: 600; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 10px 28px; font-family: var(--mono); font-size: 13px; color: var(--text-dim); }
+  .hero-meta div span { display: block; color: var(--text-faint); font-size: 11px; margin-bottom: 3px; }
+  .hero-meta strong { color: var(--text); font-weight: 500; }
+  #age-value { color: var(--accent); }
 
-    /* ─── Scrollbar ─── */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+  .cta-row { margin-top: 36px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    font-family: var(--mono); font-size: 13px; text-decoration: none; padding: 11px 18px;
+    border-radius: var(--radius); border: 1px solid var(--line); display: inline-flex; align-items: center; gap: 8px;
+    transition: border-color .15s ease, background-color .15s ease;
+  }
+  .btn-primary { background: var(--accent); color: #04211d; border-color: var(--accent); font-weight: 700; }
+  .btn-primary:hover { opacity: .9; }
+  .btn-ghost { color: var(--text); }
+  .btn-ghost:hover { border-color: var(--text-dim); background: var(--bg-raised); }
 
-    /* ─── Noise overlay ─── */
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 0; opacity: 0.4;
-    }
+  /* SECTIONS */
+  section { padding: 56px 0; border-top: 1px solid var(--line); }
+  h2.sec-title {
+    font-family: var(--mono); font-size: 13px; color: var(--text-faint); font-weight: 500;
+    margin: 0 0 28px; display: flex; align-items: center; gap: 10px;
+  }
+  h2.sec-title::before { content: '//'; color: var(--accent); }
+  h2.sec-title b { color: var(--text); font-weight: 600; font-size: 20px; font-family: var(--sans); margin-left: 2px; }
 
-    /* ─── Navbar ─── */
-    .navbar {
-      background: var(--nav-bg) !important;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      transition: background var(--transition), border-color var(--transition);
-      position: fixed; width: 100%; top: 0; z-index: 1000;
-    }
-    .navbar-brand {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 1.4rem;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .nav-link {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--text-muted) !important;
-      letter-spacing: 0.05em;
-      padding: 0.4rem 0.8rem !important;
-      transition: color var(--transition);
-      position: relative;
-    }
-    .nav-link::after {
-      content: '';
-      position: absolute; bottom: -2px; left: 50%; right: 50%;
-      height: 2px; background: var(--accent);
-      transition: left var(--transition), right var(--transition);
-    }
-    .nav-link:hover { color: var(--text) !important; }
-    .nav-link:hover::after { left: 0.8rem; right: 0.8rem; }
+  .about-text { max-width: 62ch; color: var(--text-dim); font-size: 16px; }
+  .about-text p { margin: 0 0 14px; }
+  .about-text strong { color: var(--text); }
 
-    /* ─── Control Buttons (theme + lang) ─── */
-    .ctrl-btn {
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 8px;
-      width: 36px; height: 36px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      transition: all var(--transition);
-      font-size: 0.85rem;
-      font-family: var(--font-mono);
-    }
-    .ctrl-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .badge {
+    font-family: var(--mono); font-size: 12px; color: var(--accent); background: var(--accent-soft);
+    padding: 5px 10px; border-radius: var(--radius); border: 1px solid transparent;
+  }
 
-    /* ─── Hero ─── */
-    .hero {
-      min-height: 100vh;
-      display: flex; align-items: center;
-      position: relative; overflow: hidden;
-      padding: 8rem 0 4rem;
-    }
-    .hero-grid {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
-      -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
-    }
-    .hero-glow {
-      position: absolute;
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-    .hero-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: clamp(2.8rem, 7vw, 5.5rem);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      margin-bottom: 1.2rem;
-    }
-    .hero-title .highlight {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero-terminal {
-      font-family: var(--font-mono);
-      font-size: clamp(0.85rem, 2vw, 1rem);
-      color: var(--accent-2);
-      margin-bottom: 2rem;
-      min-height: 1.6em;
-    }
-    .cursor {
-      display: inline-block;
-      width: 10px; height: 1.1em;
-      background: var(--accent-2);
-      vertical-align: text-bottom;
-      animation: blink 1s step-end infinite;
-      margin-left: 2px;
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .skill-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .skill { background: var(--bg-raised); padding: 16px; }
+  .skill .name { font-family: var(--mono); font-weight: 600; font-size: 14px; }
+  .skill .cat { font-size: 12px; color: var(--text-faint); margin-top: 4px; }
 
-    .hero-desc {
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      max-width: 540px;
-      margin-bottom: 2.5rem;
-    }
-    .hero-avatar {
-      position: relative;
-      width: 280px; height: 280px;
-      margin: 0 auto;
-    }
-    .hero-avatar .avatar-ring {
-      position: absolute; inset: -8px;
-      border-radius: 50%;
-      background: conic-gradient(var(--accent), var(--accent-2), var(--accent));
-      animation: spin 6s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .hero-avatar .avatar-inner {
-      position: relative; z-index: 1;
-      width: 100%; height: 100%;
-      border-radius: 50%;
-      background: var(--bg3);
-      border: 4px solid var(--bg);
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-    }
-    .hero-avatar .avatar-inner i {
-      font-size: 7rem;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+  /* SKILL RING */
+  .skill-ring-wrap { display: flex; justify-content: center; padding: 12px 0 4px; }
+  .skill-ring { position: relative; width: 340px; height: 340px; --radius: 140px; }
+  .ring-ring { position: absolute; inset: 0; border: 1px solid var(--line); border-radius: 50%; }
+  .ring-ring::before { content: ''; position: absolute; inset: 30px; border: 1px dashed var(--line); border-radius: 50%; opacity: .7; }
+  .ring-center {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 92px; height: 92px; border-radius: 50%; background: var(--bg-raised);
+    border: 1px solid var(--line); display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; box-shadow: 0 0 0 6px var(--bg), 0 0 24px 4px var(--accent-soft); z-index: 2;
+  }
+  .ring-center .glyph { font-family: var(--mono); font-weight: 700; color: var(--accent); font-size: 16px; }
+  .ring-center .caption { font-family: var(--mono); font-size: 10px; color: var(--text-faint); margin-top: 3px; letter-spacing: .02em; }
+  .ring-track { position: absolute; top: 50%; left: 50%; width: 0; height: 0; animation: ring-spin 20s linear infinite; }
+  .ring-node { position: absolute; top: 0; left: 0; width: 0; height: 0; transform: rotate(var(--angle)) translateX(var(--radius)); }
+  .ring-node-fix { position: absolute; transform: translate(-50%, -50%) rotate(calc(-1 * var(--angle))); }
+  .ring-node-spin { display: flex; flex-direction: column; align-items: center; gap: 6px; animation: ring-spin-rev 20s linear infinite; }
+  .node-badge {
+    width: 50px; height: 50px; border-radius: 50%; background: var(--bg-raised); border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center; padding: 11px; cursor: pointer;
+    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .node-badge svg { width: 100%; height: 100%; display: block; }
+  .node-badge:hover, .node-badge:focus-visible { transform: scale(1.14); border-color: var(--accent); outline: none; }
+  .node-badge.active { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); transform: scale(1.14); }
+  .node-label { font-family: var(--mono); font-size: 10px; color: var(--text-faint); white-space: nowrap; }
+  @keyframes ring-spin { to { transform: rotate(360deg); } }
+  @keyframes ring-spin-rev { to { transform: rotate(-360deg); } }
+  .skill-ring.is-open .ring-track, .skill-ring.is-open .ring-node-spin { animation-play-state: paused; }
 
-    /* ─── Stat Badges ─── */
-    .stat-badge {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 0.6rem 1rem;
-      text-align: center;
-      transition: border-color var(--transition);
-    }
-    .stat-badge:hover { border-color: var(--accent); }
-    .stat-badge .num {
-      font-family: var(--font-display);
-      font-size: 1.6rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .stat-badge .label {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-    }
+  .skill-info {
+    max-width: 420px; margin: 22px auto 0; border: 1px solid var(--line); border-radius: var(--radius);
+    background: var(--bg-raised); padding: 0; overflow: hidden; opacity: 0; max-height: 0;
+    transition: opacity .22s ease, max-height .28s ease, padding .28s ease, transform .22s ease;
+    transform: translateY(-6px);
+  }
+  .skill-info.show { opacity: 1; max-height: 220px; padding: 18px 20px; transform: translateY(0); }
+  .skill-info-head { display: flex; align-items: center; gap: 12px; }
+  .skill-info-icon { width: 34px; height: 34px; flex-shrink: 0; }
+  .skill-info-icon svg { width: 100%; height: 100%; display: block; }
+  .skill-info-title { font-family: var(--mono); font-weight: 700; font-size: 15px; flex: 1; }
+  .skill-info-close {
+    background: none; border: 1px solid var(--line); color: var(--text-dim); width: 26px; height: 26px;
+    border-radius: var(--radius); font-family: var(--mono); font-size: 13px; cursor: pointer; line-height: 1;
+  }
+  .skill-info-close:hover { color: var(--text); border-color: var(--text-dim); }
+  .skill-info-desc { color: var(--text-dim); font-size: 14px; margin: 10px 0 0; line-height: 1.55; }
 
-    /* ─── Section Headers ─── */
-    .section-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
-    .section-title {
-      font-family: var(--font-display);
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 1rem;
-      letter-spacing: -0.02em;
-    }
+  @media (max-width: 480px) {
+    .skill-ring { width: 260px; height: 260px; --radius: 100px; }
+    .ring-center { width: 76px; height: 76px; }
+    .node-badge { width: 42px; height: 42px; padding: 9px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ring-track, .ring-node-spin { animation-duration: 90s; }
+  }
 
-    /* ─── About ─── */
-    section { padding: 6rem 0; }
-    .about-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 2rem;
-      transition: border-color var(--transition), transform var(--transition);
-    }
-    .about-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .doc-list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .doc-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 16px 18px; text-decoration: none; color: var(--text); background: var(--bg-raised);
+    border-bottom: 1px solid var(--line); transition: background-color .15s ease;
+  }
+  .doc-list li:last-child .doc-row { border-bottom: none; }
+  .doc-row:hover { background: var(--bg-inset); }
+  .doc-name { font-weight: 600; font-size: 15px; }
+  .doc-sub { font-family: var(--mono); font-size: 12px; color: var(--text-faint); margin-top: 3px; }
+  .doc-arrow { font-family: var(--mono); color: var(--accent); flex-shrink: 0; }
+  .doc-note { font-size: 13px; color: var(--text-faint); margin-top: 14px; }
 
-    /* ─── Skills ─── */
-    .skill-group-title {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent-2);
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .skill-chip {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.3rem 0.8rem;
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin: 0.25rem;
-      transition: all var(--transition);
-      cursor: default;
-    }
-    .skill-chip:hover {
-      border-color: var(--accent);
-      color: var(--text);
-      transform: translateY(-2px);
-    }
-    .skill-chip i { color: var(--accent); font-size: 0.9rem; }
+  .contact-card {
+    border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-raised);
+    padding: 28px; display: flex; flex-wrap: wrap; gap: 24px; align-items: center; justify-content: space-between;
+  }
+  .contact-card p { margin: 0; color: var(--text-dim); max-width: 40ch; }
+  .contact-links { display: flex; gap: 10px; flex-wrap: wrap; }
 
-    /* ─── Projects ─── */
-    .project-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-      transition: all 0.35s ease;
-      height: 100%;
-    }
-    .project-card:hover { border-color: var(--accent); transform: translateY(-6px); box-shadow: 0 20px 60px rgba(124,58,237,0.15); }
-    .project-card .card-header-band {
-      height: 4px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    }
-    .project-card .card-body { padding: 1.5rem; }
-    .project-tag {
-      display: inline-block;
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      background: rgba(124,58,237,0.15);
-      color: var(--accent);
-      border: 1px solid rgba(124,58,237,0.3);
-      border-radius: 4px;
-      padding: 0.15rem 0.5rem;
-      margin-right: 0.3rem; margin-bottom: 0.3rem;
-    }
-    .project-tag.cyan {
-      background: rgba(6,182,212,0.12);
-      color: var(--accent-2);
-      border-color: rgba(6,182,212,0.3);
-    }
-    .project-icon {
-      width: 48px; height: 48px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem; color: #fff;
-      margin-bottom: 1rem;
-    }
-    .project-title {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-    .project-desc {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-    }
-    .project-links a {
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      margin-right: 0.5rem;
-      transition: color var(--transition);
-    }
-    .project-links a:hover { color: var(--accent); }
+  footer { padding: 32px 0 48px; color: var(--text-faint); font-family: var(--mono); font-size: 12px; }
 
-    /* ─── Experience ─── */
-    .timeline { position: relative; padding-left: 2rem; }
-    .timeline::before {
-      content: '';
-      position: absolute; left: 7px; top: 0; bottom: 0;
-      width: 2px;
-      background: linear-gradient(to bottom, var(--accent), var(--accent-2), transparent);
-    }
-    .timeline-item { position: relative; margin-bottom: 2.5rem; }
-    .timeline-dot {
-      position: absolute; left: -2rem; top: 4px;
-      width: 14px; height: 14px;
-      border-radius: 50%;
-      background: var(--accent);
-      border: 3px solid var(--bg);
-      box-shadow: 0 0 0 2px var(--accent);
-    }
-    .timeline-date {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--accent-2);
-      letter-spacing: 0.05em;
-      margin-bottom: 0.3rem;
-    }
-    .timeline-role {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 0.2rem;
-    }
-    .timeline-company {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 0.5rem;
-    }
-    .timeline-desc {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
-
-    /* ─── Contact ─── */
-    .contact-section {
-      background: var(--bg2);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .contact-link {
-      display: flex; align-items: center; gap: 1rem;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.2rem 1.5rem;
-      text-decoration: none;
-      color: var(--text);
-      transition: all var(--transition);
-      margin-bottom: 1rem;
-    }
-    .contact-link:hover { border-color: var(--accent); transform: translateX(6px); color: var(--text); }
-    .contact-link i { font-size: 1.4rem; color: var(--accent); width: 28px; }
-    .contact-link .link-label { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
-    .contact-link .link-value { font-weight: 600; font-size: 0.95rem; }
-
-    .cta-mega {
-      font-family: var(--font-display);
-      font-size: clamp(1.6rem, 4vw, 3rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-    }
-
-    /* ─── Footer ─── */
-    footer {
-      background: var(--bg);
-      border-top: 1px solid var(--border);
-      padding: 2rem 0;
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    /* ─── Buttons ─── */
-    .btn-accent {
-      background: linear-gradient(135deg, var(--accent), #5B21B6);
-      border: none;
-      color: #fff;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      padding: 0.7rem 1.6rem;
-      border-radius: 10px;
-      letter-spacing: 0.05em;
-      transition: all var(--transition);
-      text-decoration: none;
-      display: inline-flex; align-items: center; gap: 0.5rem;
-    }
-    .btn-accent:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,58,237,0.4); color: #fff; }
-    .btn-outline-accent {
-      background: transparent;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      padding: 0.7rem 1.6rem;
-      border-radius: 10px;
-      letter-spacing: 0.05em;
-      transition: all var(--transition);
-      text-decoration: none;
-      display: inline-flex; align-items: center; gap: 0.5rem;
-    }
-    .btn-outline-accent:hover { background: rgba(124,58,237,0.1); color: var(--accent); transform: translateY(-2px); }
-
-    /* ─── Navbar toggler ─── */
-    .navbar-toggler { border-color: var(--border) !important; }
-    .navbar-toggler-icon {
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%237C3AED' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
-    }
-
-    /* ─── Back to top ─── */
-    #backToTop {
-      position: fixed; bottom: 2rem; right: 2rem;
-      width: 44px; height: 44px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      border: none; border-radius: 12px;
-      color: #fff; font-size: 1.2rem;
-      display: none; align-items: center; justify-content: center;
-      cursor: pointer; z-index: 999;
-      transition: all var(--transition);
-      box-shadow: 0 4px 20px rgba(124,58,237,0.4);
-    }
-    #backToTop:hover { transform: translateY(-3px); }
-    #backToTop.show { display: flex; }
-
-    /* ─── Filter Buttons ─── */
-    .filter-btn {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      padding: 0.4rem 1rem;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all var(--transition);
-    }
-    .filter-btn.active, .filter-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: rgba(124,58,237,0.1);
-    }
-
-    /* ─── Misc ─── */
-    .text-accent { color: var(--accent) !important; }
-    .text-muted-custom { color: var(--text-muted); }
-    .border-accent { border-color: var(--accent) !important; }
-    .section-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      margin: 0;
-    }
-
-    @media (max-width: 768px) {
-      .hero { padding: 7rem 0 3rem; }
-      .hero-avatar { width: 200px; height: 200px; }
-      .hero-avatar .avatar-inner i { font-size: 5rem; }
-      section { padding: 4rem 0; }
-      .timeline { padding-left: 1.5rem; }
-    }
-  </style>
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+</style>
 </head>
 <body>
 
-<!-- ─── NAVBAR ─── -->
-<nav class="navbar navbar-expand-lg">
-  <div class="container">
-    <a class="navbar-brand" href="#home">suo.dev</a>
-    <div class="d-flex gap-2 align-items-center ms-auto me-3 order-lg-last">
-      <button class="ctrl-btn" id="themeToggle" title="Toggle theme">
-        <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
-      </button>
-      <button class="ctrl-btn" id="langToggle" title="Toggle language" style="font-size:0.7rem;font-weight:700;letter-spacing:0">
-        <span id="langLabel">EN</span>
-      </button>
+<header>
+  <nav class="wrap">
+    <a class="brand" href="#top">adit<span>@</span>kurnia</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Buka menu" aria-expanded="false">☰</button>
+    <ul class="navlinks" id="navLinks">
+      <li><a href="#about">about</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#docs">docs</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero wrap" style="border-top:none;">
+    <p class="prompt-line">whoami</p>
+    <h1 class="title">Adit Kurnia</h1>
+    <p class="role">
+      <strong>Developer</strong> &amp; <strong>Cyber Security enthusiast</strong> —
+      membangun website, aplikasi, dan game, sambil terus memperdalam keamanan siber.
+    </p>
+    <div class="hero-meta">
+      <div><span>umur</span><strong id="age-value">—</strong></div>
+      <div><span>status</span><strong>Siswa SMK, Kelas XI TKJ</strong></div>
+      <div><span>fokus</span><strong>Web · App · Game · Security</strong></div>
+      <div><span>lokasi</span><strong>Indonesia</strong></div>
     </div>
-    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navMenu">
-      <ul class="navbar-nav mx-auto gap-1">
-        <li class="nav-item"><a class="nav-link" href="#about" data-i18n="nav.about">Tentang</a></li>
-        <li class="nav-item"><a class="nav-link" href="#skills" data-i18n="nav.skills">Keahlian</a></li>
-        <li class="nav-item"><a class="nav-link" href="#projects" data-i18n="nav.projects">Proyek</a></li>
-        <li class="nav-item"><a class="nav-link" href="#experience" data-i18n="nav.experience">Pengalaman</a></li>
-        <li class="nav-item"><a class="nav-link" href="#contact" data-i18n="nav.contact">Kontak</a></li>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#docs">Lihat Dokumen</a>
+      <a class="btn btn-ghost" href="#contact">Hubungi via WhatsApp</a>
+      <a class="btn btn-ghost" href="https://github.com/aditkurnia" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <h2 class="sec-title">01 <b>Tentang</b></h2>
+      <div class="about-text">
+        <p>
+          Saya <strong>Adit Kurnia</strong>, saat ini menempuh pendidikan di <strong>SMK jurusan TKJ (Teknik Komputer dan Jaringan)</strong>,
+          kelas XI. Di luar jam sekolah, saya menghabiskan waktu untuk membangun proyek-proyek pribadi: dari website,
+          aplikasi Android, sampai game — dan belakangan ini fokus menekuni <strong>cyber security</strong>.
+        </p>
+        <p>
+          Saya suka belajar dengan langsung praktik: membaca dokumentasi, mencoba di project kecil, lalu memperdalam
+          bagian yang menarik. Karya dan eksperimen saya bisa dilihat di
+          <a href="https://github.com/aditkurnia" target="_blank" rel="noopener" style="color:var(--accent);">github.com/aditkurnia</a>
+          dan situs pribadi <a href="https://katsuo.my.id" target="_blank" rel="noopener" style="color:var(--accent);">katsuo.my.id</a>.
+        </p>
+      </div>
+      <div class="badge-row">
+        <span class="badge">Web Development</span>
+        <span class="badge">App Development</span>
+        <span class="badge">Game Development</span>
+        <span class="badge">Cyber Security</span>
+        <span class="badge">Android</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <h2 class="sec-title">02 <b>Skills</b></h2>
+      <div class="skill-ring-wrap">
+        <div class="skill-ring" id="skillRing">
+          <div class="ring-ring"></div>
+          <div class="ring-track">
+            <div class="ring-node" style="--angle:0deg"><div class="ring-node-fix"><div class="ring-node-spin"><button type="button" class="node-badge" data-skill="javascript" data-name="JavaScript" data-desc="Bahasa utama untuk logika dan interaktivitas di website." aria-label="JavaScript" aria-pressed="false"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path fill="#F7DF1E" d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z"/></svg></button><span class="node-label">JavaScript</span></div></div></div>
+            <div class="ring-node" style="--angle:40deg"><div class="ring-node-fix"><div class="ring-node-spin"><button type="button" class="node-badge" data-skill="nodedotjs" data-name="Node.js" data-desc="Menjalankan JavaScript di sisi server untuk membangun API dan backend." aria-label="Node.js" aria-pressed="false"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path fill="#5FA04E" d="M11.998,24c-0.321,0-0.641-0.084-0.922-0.247l-2.936-1.737c-0.438-0.245-0.224-0.332-0.08-0.383 c0.585-0.203,0.703-0.25,1.328-0.604c0.065-0.037,0.151-0.023,0.218,0.017l2.256,1.339c0.082,0.045,0.197,0.045,0.272,0l8.795-5.076 c0.082-0.047,0.134-0.141,0.134-0.238V6.921c0-0.099-0.053-0.192-0.137-0.242l-8.791-5.072c-0.081-0.047-0.189-0.047-0.271,0 L3.075,6.68C2.99,6.729,2.936,6.825,2.936,6.921v10.15c0,0.097,0.054,0.189,0.139,0.235l2.409,1.392 c1.307,0.654,2.108-0.116,2.108-0.89V7.787c0-0.142,0.114-0.253,0.256-0.253h1.115c0.139,0,0.255,0.112,0.255,0.253v10.021 c0,1.745-0.95,2.745-2.604,2.745c-0.508,0-0.909,0-2.026-0.551L2.28,18.675c-0.57-0.329-0.922-0.945-0.922-1.604V6.921 c0-0.659,0.353-1.275,0.922-1.603l8.795-5.082c0.557-0.315,1.296-0.315,1.848,0l8.794,5.082c0.57,0.329,0.924,0.944,0.924,1.603 v10.15c0,0.659-0.354,1.273-0.924,1.604l-8.794,5.078C12.643,23.916,12.324,24,11.998,24z M19.099,13.993 c0-1.9-1.284-2.406-3.987-2.763c-2.731-0.361-3.009-0.548-3.009-1.187c0-0.528,0.235-1.233,2.258-1.233 c1.807,0,2.473,0.389,2.747,1.607c0.024,0.115,0.129,0.199,0.247,0.199h1.141c0.071,0,0.138-0.031,0.186-0.081 c0.048-0.054,0.074-0.123,0.067-0.196c-0.177-2.098-1.571-3.076-4.388-3.076c-2.508,0-4.004,1.058-4.004,2.833 c0,1.925,1.488,2.457,3.895,2.695c2.88,0.282,3.103,0.703,3.103,1.269c0,0.983-0.789,1.402-2.642,1.402 c-2.327,0-2.839-0.584-3.011-1.742c-0.02-0.124-0.126-0.215-0.253-0.215h-1.137c-0.141,0-0.254,0.112-0.254,0.253 c0,1.482,0.806,3.248,4.655,3.248C17.501,17.007,19.099,15.91,19.099,13.993z"/></svg></button><span class="node-label">Node.js</span></div></div></div>
+            <div class="ring-node" style="--angle:80deg"><div class="ring-node-fix"><div class="ring-node-spin"><button type="button" class="node-badge" data-skill="python" data-name="Python" data-desc="Dipakai untuk scripting, automasi, dan eksperimen seputar data & security." aria-label="Python" aria-pressed="false"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path fill="#3776AB" d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z"/></svg></button><span class="node-label">Python</span></div></div></div>
+            <div class="ring-node" style="--angle:120deg"><div class="ring-node-fix"><div class="ring-node-spin"><button type="button" class="node-badge" data-skill="php" data-name="PHP" data-desc="Bahasa server-side untuk membangun aplikasi web dinamis." aria-label="PHP" aria-pressed="false"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path fill="#777BB4" d="M7.01 10.207h-.944l-.515 2.648h.838c.556 0 .97-.105 1.242-.314.272-.21.455-.559.55-1.049.092-.47.05-.802-.124-.995-.175-.193-.523-.29-1.047-.29zM12 5.688C5.373 5.688 0 8.514 0 12s5.373 6.313 12 6.313S24 15.486 24 12c0-3.486-5.373-6.312-12-6.312zm-3.26 7.451c-.261.25-.575.438-.917.551-.336.108-.765.164-1.285.164H5.357l-.327 1.681H3.652l1.23-6.326h2.65c.797 0 1.378.209 1.744.628.366.418.476 1.002.33 1.752a2.836 2.836 0 0 1-.305.847c-.143.255-.33.49-.561.703zm4.024.715l.543-2.799c.063-.318.039-.536-.068-.651-.107-.116-.336-.174-.687-.174H11.46l-.704 3.625H9.388l1.23-6.327h1.367l-.327 1.682h1.218c.767 0 1.295.134 1.586.401s.378.7.263 1.299l-.572 2.944h-1.389zm7.597-2.265a2.782 2.782 0 0 1-.305.847c-.143.255-.33.49-.561.703a2.44 2.44 0 0 1-.917.551c-.336.108-.765.164-1.286.164h-1.18l-.327 1.682h-1.378l1.23-6.326h2.649c.797 0 1.378.209 1.744.628.366.417.477 1.001.331 1.751zM17.766 10.207h-.943l-.516 2.648h.838c.557 0 .971-.105 1.242-.314.272-.21.455-.559.551-1.049.092-.47.049-.802-.125-.995s-.524-.29-1.047-.29z"/></svg></button><span class="node-label">PHP</span></div></div></div>
+            <div class="ring-node" style="--angle:160deg"><div class="ring-node-fix"><div class="ring-node-spin"><button type="button" class="node-badge" data-skill="laravel" data-name="Laravel" data-desc="Framework PHP untuk membangun backend yang rapi dan terstruktur." aria-label="Laravel" aria-pressed="false"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path fill="#FF2D20" d="M23.642 5.43a.364.364 0 01.014.1v5.149c0 .135-.073.26-.189.326l-4.323 2.49v4.934a.378.378 0 01-.188.326L9.93 23.949a.316.316 0 01-.066.027c-.008.002-.016.008-.024.01a.348.348 0 01-.192 0c-.011-.002-.02-.008-.03-.012-.02-.008-.042-.014-.062-.025L.533 18.755a.376.376 0 01-.189-.326V2.974c0-.033.005-.066.014-.098.003-.012.01-.02.014-.032a.369.369 0 01.023-.058c.004-.013.015-.022.023-.033l.033-.045c.012-.01.025-.018.037-.027.014-.012.027-.024.041-.034H.53L5.043.05a.375.375 0 01.375 0L9.93 2.647h.002c.015.01.027.021.04.033l.038.027c.013.014.02.03.033.045.008.011.02.021.025.033.01.02.017.038.024.058.003.011.01.021.013.032.01.031.014.064.014.098v9.652l3.76-2.164V5.527c0-.033.004-.066.013-.098.003-.01.01-.02.013-.032a.487.487 0 01.024-.059c.007-.012.018-.02.025-.033.012-.015.021-.03.033-.043.012-.012.025-.02.037-.028.014-.01.026-.023.041-.032h.001l4.513-2.598a.375.375 0 01.375 0l4.513 2.598c.016.01.027.021.042.031.012.01.025.018.036.028.013.014.022.03.034.044.008.012.019.021.024.033.011.02.018.04.024.06.006.01.012.021.015.032zm-.74 5.032V6.179l-1.578.908-2.182 1.256v4.283zm-4.51 7.75v-4.287l-2.147 1.225-6.126 3.498v4.325zM1.093 3.624v14.588l8.273 4.761v-4.325l-4.322-2.445-.002-.003H5.04c-.014-.01-.025-.021-.04-.031-.011-.01-.024-.018-.035-.027l-.001-.002c-.013-.012-.021-.025-.031-.04-.01-.011-.021-.022-.028-.036h-.002c-.008-.014-.013-.031-.02-.047-.006-.016-.014-.027-.018-.043a.49.49 0 01-.008-.057c-.002-.014-.006-.027-.006-.041V5.789l-2.18-1.257zM5.23.81L1.47 2.974l3.76 2.164 3.758-2.164zm1.956 13.505l2.182-1.256V3.624l-1.58.91-2.182 1.255v9.435zm11.581-10.95l-3.76 2.163 3.76 2.163 3.759-2.164zm-.376 4.978L16.21 7.087 14.63 6.18v4.283l2.182 1.256 1.58.908zm-8.65 9.654l5.514-3.148 2.756-1.572-3.757-2.163-4.323 2.489-3.941 2.27z"/></svg></button><span class="node-label">Laravel</span></div></div></div>
+            <div class="ring-node" style="--angle:200deg"><div class="ring-node-fix"><div class="ring-node-spin"><button type="button" class="node-badge" data-skill="kotlin" data-name="Kotlin" data-desc="Bahasa utama untuk pengembangan aplikasi Android." aria-label="Kotlin" aria-pressed="false"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path fill="#7F52FF" d="M24 24H0V0h24L12 12Z"/></svg></button><span class="node-label">Kotlin</span></div></div></div>
+            <div class="ring-node" style="--angle:240deg"><div class="ring-node-fix"><div class="ring-node-spin"><button type="button" class="node-badge" data-skill="godotengine" data-name="Godot" data-desc="Game engine open-source untuk membuat game 2D maupun 3D." aria-label="Godot" aria-pressed="false"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path fill="#478CBF" d="M9.5598.683c-1.096.244-2.1812.5831-3.1983 1.0951.023.8981.081 1.7582.199 2.6323-.395.253-.81.47-1.178.766-.375.288-.7581.564-1.0971.9011-.6781-.448-1.3962-.869-2.1352-1.2411C1.3532 5.6934.608 6.6186 0 7.6546c.458.7411.936 1.4352 1.4521 2.0942h.014v6.3565c.012 0 .023 0 .035.003l3.8963.376c.204.02.364.184.378.3891l.12 1.7201 3.3994.242.234-1.587c.03-.206.207-.358.415-.358h4.1114c.208 0 .385.152.415.358l.234 1.587 3.3993-.242.12-1.72a.4196.4196 0 01.378-.3891l3.8954-.376c.012 0 .023-.003.035-.003v-.5071h.002V9.7498h.014c.516-.659.994-1.3531 1.4521-2.0942-.608-1.036-1.3541-1.9611-2.1512-2.8192-.739.372-1.4571.793-2.1352 1.2411-.339-.337-.721-.613-1.096-.901-.369-.296-.7841-.5131-1.1781-.7661.117-.8741.175-1.7342.199-2.6323-1.0171-.512-2.1012-.851-3.1983-1.095-.438.736-.838 1.533-1.1871 2.3121-.414-.069-.829-.094-1.2461-.099h-.016c-.417.005-.832.03-1.2461.099-.349-.779-.749-1.576-1.1881-2.3121l.001-.001zM6.4765 9.9889c1.2971 0 2.3492 1.0511 2.3492 2.3482s-1.052 2.3482-2.3492 2.3482c-1.296 0-2.3482-1.051-2.3482-2.3482 0-1.297 1.0511-2.3482 2.3482-2.3482zm11.049 0c1.296 0 2.3482 1.0511 2.3482 2.3482s-1.0511 2.3482-2.3482 2.3482-2.3492-1.051-2.3492-2.3482c0-1.297 1.051-2.3482 2.3492-2.3482zm-10.824.9301c-.861 0-1.559.698-1.559 1.5591s.698 1.5582 1.559 1.5582c.8611 0 1.5592-.698 1.5592-1.5582 0-.86-.697-1.559-1.5591-1.559zm10.598 0c-.8611 0-1.5582.698-1.5582 1.5591s.697 1.5582 1.5581 1.5582c.8611 0 1.5592-.698 1.5592-1.5582 0-.86-.697-1.559-1.5592-1.559zm-5.2985.453c.417 0 .757.308.757.6871v2.1622c0 .379-.339.687-.757.687s-.756-.308-.756-.687V12.059c0-.379.339-.687.756-.687zM1.4601 16.9464c.002.377.006.789.006.871 0 3.7014 4.6944 5.4795 10.5269 5.5005h.014c5.8325-.02 10.5259-1.7991 10.5259-5.5004 0-.084.005-.495.007-.871l-3.5023.338-.121 1.729a.421.421 0 01-.389.3901l-4.1814.296a.4203.4203 0 01-.415-.358l-.238-1.6141h-3.3863l-.238 1.6141a.4192.4192 0 01-.4451.357l-4.1513-.296c-.208-.015-.375-.181-.389-.389l-.12-1.7292-3.5044-.337z"/></svg></button><span class="node-label">Godot</span></div></div></div>
+            <div class="ring-node" style="--angle:280deg"><div class="ring-node-fix"><div class="ring-node-spin"><button type="button" class="node-badge" data-skill="linux" data-name="Linux" data-desc="Sistem operasi harian untuk development dan eksplorasi cyber security." aria-label="Linux" aria-pressed="false"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path fill="#FCC624" d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139zm.529 3.405h.013c.213 0 .396.062.584.198.19.135.33.332.438.533.105.259.158.459.166.724 0-.02.006-.04.006-.06v.105a.086.086 0 01-.004-.021l-.004-.024a1.807 1.807 0 01-.15.706.953.953 0 01-.213.335.71.71 0 00-.088-.042c-.104-.045-.198-.064-.284-.133a1.312 1.312 0 00-.22-.066c.05-.06.146-.133.183-.198.053-.128.082-.264.088-.402v-.02a1.21 1.21 0 00-.061-.4c-.045-.134-.101-.2-.183-.333-.084-.066-.167-.132-.267-.132h-.016c-.093 0-.176.03-.262.132a.8.8 0 00-.205.334 1.18 1.18 0 00-.09.4v.019c.002.089.008.179.02.267-.193-.067-.438-.135-.607-.202a1.635 1.635 0 01-.018-.2v-.02a1.772 1.772 0 01.15-.768c.082-.22.232-.406.43-.533a.985.985 0 01.594-.2zm-2.962.059h.036c.142 0 .27.048.399.135.146.129.264.288.344.465.09.199.14.4.153.667v.004c.007.134.006.2-.002.266v.08c-.03.007-.056.018-.083.024-.152.055-.274.135-.393.2.012-.09.013-.18.003-.267v-.015c-.012-.133-.04-.2-.082-.333a.613.613 0 00-.166-.267.248.248 0 00-.183-.064h-.021c-.071.006-.13.04-.186.132a.552.552 0 00-.12.27.944.944 0 00-.023.33v.015c.012.135.037.2.08.334.046.134.098.2.166.268.01.009.02.018.034.024-.07.057-.117.07-.176.136a.304.304 0 01-.131.068 2.62 2.62 0 01-.275-.402 1.772 1.772 0 01-.155-.667 1.759 1.759 0 01.08-.668 1.43 1.43 0 01.283-.535c.128-.133.26-.2.418-.2zm1.37 1.706c.332 0 .733.065 1.216.399.293.2.523.269 1.052.468h.003c.255.136.405.266.478.399v-.131a.571.571 0 01.016.47c-.123.31-.516.643-1.063.842v.002c-.268.135-.501.333-.775.465-.276.135-.588.292-1.012.267a1.139 1.139 0 01-.448-.067 3.566 3.566 0 01-.322-.198c-.195-.135-.363-.332-.612-.465v-.005h-.005c-.4-.246-.616-.512-.686-.71-.07-.268-.005-.47.193-.6.224-.135.38-.271.483-.336.104-.074.143-.102.176-.131h.002v-.003c.169-.202.436-.47.839-.601.139-.036.294-.065.466-.065zm2.8 2.142c.358 1.417 1.196 3.475 1.735 4.473.286.534.855 1.659 1.102 3.024.156-.005.33.018.513.064.646-1.671-.546-3.467-1.089-3.966-.22-.2-.232-.335-.123-.335.59.534 1.365 1.572 1.646 2.757.13.535.16 1.104.021 1.67.067.028.135.06.205.067 1.032.534 1.413.938 1.23 1.537v-.043c-.06-.003-.12 0-.18 0h-.016c.151-.467-.182-.825-1.065-1.224-.915-.4-1.646-.336-1.77.465-.008.043-.013.066-.018.135-.068.023-.139.053-.209.064-.43.268-.662.669-.793 1.187-.13.533-.17 1.156-.205 1.869v.003c-.02.334-.17.838-.319 1.35-1.5 1.072-3.58 1.538-5.348.334a2.645 2.645 0 00-.402-.533 1.45 1.45 0 00-.275-.333c.182 0 .338-.03.465-.067a.615.615 0 00.314-.334c.108-.267 0-.697-.345-1.163-.345-.467-.931-.995-1.788-1.521-.63-.4-.986-.87-1.15-1.396-.165-.534-.143-1.085-.015-1.645.245-1.07.873-2.11 1.274-2.763.107-.065.037.135-.408.974-.396.751-1.14 2.497-.122 3.854a8.123 8.123 0 01.647-2.876c.564-1.278 1.743-3.504 1.836-5.268.048.036.217.135.289.202.218.133.38.333.59.465.21.201.477.335.876.335.039.003.075.006.11.006.412 0 .73-.134.997-.268.29-.134.52-.334.74-.4h.005c.467-.135.835-.402 1.044-.7zm2.185 8.958c.037.6.343 1.245.882 1.377.588.134 1.434-.333 1.791-.765l.211-.01c.315-.007.577.01.847.268l.003.003c.208.199.305.53.391.876.085.4.154.78.409 1.066.486.527.645.906.636 1.14l.003-.007v.018l-.003-.012c-.015.262-.185.396-.498.595-.63.401-1.746.712-2.457 1.57-.618.737-1.37 1.14-2.036 1.191-.664.053-1.237-.2-1.574-.898l-.005-.003c-.21-.4-.12-1.025.056-1.69.176-.668.428-1.344.463-1.897.037-.714.076-1.335.195-1.814.12-.465.308-.797.641-.984l.045-.022zm-10.814.049h.01c.053 0 .105.005.157.014.376.055.706.333 1.023.752l.91 1.664.003.003c.243.533.754 1.064 1.189 1.637.434.598.77 1.131.729 1.57v.006c-.057.744-.48 1.148-1.125 1.294-.645.135-1.52.002-2.395-.464-.968-.536-2.118-.469-2.857-.602-.369-.066-.61-.2-.723-.4-.11-.2-.113-.602.123-1.23v-.004l.002-.003c.117-.334.03-.752-.027-1.118-.055-.401-.083-.71.043-.94.16-.334.396-.4.69-.533.294-.135.64-.202.915-.47h.002v-.002c.256-.268.445-.601.668-.838.19-.201.38-.336.663-.336zm7.159-9.074c-.435.201-.945.535-1.488.535-.542 0-.97-.267-1.28-.466-.154-.134-.28-.268-.373-.335-.164-.134-.144-.333-.074-.333.109.016.129.134.199.2.096.066.215.2.36.333.292.2.68.467 1.167.467.485 0 1.053-.267 1.398-.466.195-.135.445-.334.648-.467.156-.136.149-.267.279-.267.128.016.034.134-.147.332a8.097 8.097 0 01-.69.468zm-1.082-1.583V5.64c-.006-.02.013-.042.029-.05.074-.043.18-.027.26.004.063 0 .16.067.15.135-.006.049-.085.066-.135.066-.055 0-.092-.043-.141-.068-.052-.018-.146-.008-.163-.065zm-.551 0c-.02.058-.113.049-.166.066-.047.025-.086.068-.14.068-.05 0-.13-.02-.136-.068-.01-.066.088-.133.15-.133.08-.031.184-.047.259-.005.019.009.036.03.03.05v.02h.003z"/></svg></button><span class="node-label">Linux</span></div></div></div>
+            <div class="ring-node" style="--angle:320deg"><div class="ring-node-fix"><div class="ring-node-spin"><button type="button" class="node-badge" data-skill="security" data-name="Cyber Security" data-desc="Fokus belajar keamanan siber: analisis kerentanan, jaringan, dan praktik terbaik." aria-label="Cyber Security" aria-pressed="false"><svg viewBox="0 0 24 24" role="img" aria-hidden="true"><path fill="#4fd6c4" d="M12 1 3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5l-9-4zm-1.2 14.6L6.9 11.7l1.4-1.4 2.5 2.5 5.4-5.4 1.4 1.4-6.8 6.8z"/></svg></button><span class="node-label">Security</span></div></div></div>
+          </div>
+          <div class="ring-center">
+            <div class="glyph">&lt;/&gt;</div>
+            <div class="caption">skills</div>
+          </div>
+        </div>
+      </div>
+      <div class="skill-info" id="skillInfo" role="region" aria-live="polite">
+        <div class="skill-info-head">
+          <div class="skill-info-icon" id="skillInfoIcon"></div>
+          <div class="skill-info-title" id="skillInfoTitle"></div>
+          <button type="button" class="skill-info-close" id="skillInfoClose" aria-label="Tutup">&times;</button>
+        </div>
+        <p class="skill-info-desc" id="skillInfoDesc"></p>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="docs">
+    <div class="wrap">
+      <h2 class="sec-title">03 <b>Dokumen</b></h2>
+      <ul class="doc-list">
+        <li>
+          <a class="doc-row" href="https://github.com/aditkurnia/portfolio-docs/raw/main/CV-Adit-Kurnia.pdf" target="_blank" rel="noopener">
+            <span>
+              <span class="doc-name">CV / Resume</span>
+              <span class="doc-sub">PDF · dari GitHub</span>
+            </span>
+            <span class="doc-arrow">↓ download</span>
+          </a>
+        </li>
+        <li>
+          <a class="doc-row" href="https://github.com/aditkurnia/portfolio-docs/raw/main/Sertifikat.pdf" target="_blank" rel="noopener">
+            <span>
+              <span class="doc-name">Sertifikat</span>
+              <span class="doc-sub">PDF · dari GitHub</span>
+            </span>
+            <span class="doc-arrow">↓ download</span>
+          </a>
+        </li>
       </ul>
+      <p class="doc-note">Link di atas contoh (repo <code>aditkurnia/portfolio-docs</code>) — ganti dengan link file asli kamu di GitHub.</p>
     </div>
-  </div>
-</nav>
+  </section>
 
-<!-- ─── HERO ─── -->
-<section id="home" class="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-glow"></div>
-  <div class="container position-relative" style="z-index:1">
-    <div class="row align-items-center gy-5">
-      <div class="col-lg-7">
-        <p class="hero-eyebrow">
-          <i class="bi bi-terminal-fill me-2"></i><span data-i18n="hero.eyebrow">Fullstack Developer & Game Developer</span>
-        </p>
-        <h1 class="hero-title">
-          <span data-i18n="hero.greeting">Halo, saya</span><br>
-          <span class="highlight">Suo</span>
-        </h1>
-        <p class="hero-terminal">
-          <span id="typewriterText"></span><span class="cursor"></span>
-        </p>
-        <p class="hero-desc" data-i18n="hero.desc">
-          Membangun aplikasi web yang kencang dan pengalaman game yang imersif — dari server ke shader.
-        </p>
-        <div class="d-flex flex-wrap gap-3 mb-5">
-          <a href="#projects" class="btn-accent"><i class="bi bi-grid-3x3-gap-fill"></i><span data-i18n="hero.cta1">Lihat Proyek</span></a>
-          <a href="#contact" class="btn-outline-accent"><i class="bi bi-send-fill"></i><span data-i18n="hero.cta2">Kontak Saya</span></a>
-        </div>
-        <div class="row g-3">
-          <div class="col-auto"><div class="stat-badge"><div class="num">20+</div><div class="label" data-i18n="stat.projects">Proyek</div></div></div>
-          <div class="col-auto"><div class="stat-badge"><div class="num">5+</div><div class="label" data-i18n="stat.games">Game</div></div></div>
-          <div class="col-auto"><div class="stat-badge"><div class="num">3+</div><div class="label" data-i18n="stat.years">Tahun Aktif</div></div></div>
-        </div>
-      </div>
-      <div class="col-lg-5 d-flex justify-content-center">
-        <div class="hero-avatar">
-          <div class="avatar-ring"></div>
-          <div class="avatar-inner">
-            <i class="bi bi-code-slash"></i>
-          </div>
+  <section id="contact">
+    <div class="wrap">
+      <h2 class="sec-title">04 <b>Kontak</b></h2>
+      <div class="contact-card">
+        <p>Punya proyek, kolaborasi, atau sekadar mau ngobrol soal coding &amp; security? Langsung chat aja.</p>
+        <div class="contact-links">
+          <a class="btn btn-primary" href="https://wa.me/6281369127375" target="_blank" rel="noopener">Chat WhatsApp</a>
+          <a class="btn btn-ghost" href="https://github.com/aditkurnia" target="_blank" rel="noopener">GitHub ↗</a>
+          <a class="btn btn-ghost" href="https://katsuo.my.id" target="_blank" rel="noopener">katsuo.my.id ↗</a>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</main>
 
-<div class="section-divider"></div>
-
-<!-- ─── ABOUT ─── -->
-<section id="about">
-  <div class="container">
-    <div class="row justify-content-center mb-5">
-      <div class="col-lg-8 text-center">
-        <p class="section-eyebrow" data-i18n="about.eyebrow">// tentang saya</p>
-        <h2 class="section-title" data-i18n="about.title">Kode & Kreativitas</h2>
-        <p class="text-muted-custom" data-i18n="about.subtitle">Dua dunia, satu developer.</p>
-      </div>
-    </div>
-    <div class="row g-4">
-      <div class="col-lg-7">
-        <div class="about-card h-100">
-          <div class="d-flex align-items-center gap-3 mb-3">
-            <div class="project-icon"><i class="bi bi-person-badge"></i></div>
-            <h3 class="h5 mb-0 fw-bold" data-i18n="about.card1.title">Siapa Saya</h3>
-          </div>
-          <p class="text-muted-custom" data-i18n="about.card1.p1">
-            Saya seorang developer yang hidup di persimpangan antara web engineering dan pengembangan game. Saya percaya bahwa software yang baik bukan hanya soal fungsi — tapi soal pengalaman yang ditinggalkan pada penggunanya.
-          </p>
-          <p class="text-muted-custom mb-0" data-i18n="about.card1.p2">
-            Ketika tidak sedang menulis API atau membangun antarmuka, saya merancang mekanik game dan mengeksplorasi bagaimana interaktivitas bisa menjadi medium bercerita yang kuat.
-          </p>
-        </div>
-      </div>
-      <div class="col-lg-5">
-        <div class="row g-3 h-100">
-          <div class="col-12">
-            <div class="about-card">
-              <div class="d-flex align-items-center gap-3 mb-2">
-                <i class="bi bi-globe2 text-accent fs-4"></i>
-                <h4 class="h6 mb-0 fw-bold" data-i18n="about.card2.title">Fullstack Web</h4>
-              </div>
-              <p class="text-muted-custom small mb-0" data-i18n="about.card2.desc">React, Node.js, database, REST API, deployment — end-to-end.</p>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="about-card">
-              <div class="d-flex align-items-center gap-3 mb-2">
-                <i class="bi bi-controller text-accent fs-4"></i>
-                <h4 class="h6 mb-0 fw-bold" data-i18n="about.card3.title">Game Development</h4>
-              </div>
-              <p class="text-muted-custom small mb-0" data-i18n="about.card3.desc">Unity, C#, Godot, game design, physics, level design, dan storytelling.</p>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="about-card">
-              <div class="d-flex align-items-center gap-3 mb-2">
-                <i class="bi bi-cpu text-accent fs-4"></i>
-                <h4 class="h6 mb-0 fw-bold" data-i18n="about.card4.title">Tools & Infra</h4>
-              </div>
-              <p class="text-muted-custom small mb-0" data-i18n="about.card4.desc">Git, Docker, Linux, CI/CD — membangun dengan solid dari awal.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="section-divider"></div>
-
-<!-- ─── SKILLS ─── -->
-<section id="skills" style="background: var(--bg2)">
-  <div class="container">
-    <div class="row justify-content-center mb-5">
-      <div class="col-lg-8 text-center">
-        <p class="section-eyebrow" data-i18n="skills.eyebrow">// tech stack</p>
-        <h2 class="section-title" data-i18n="skills.title">Senjata Andalanku</h2>
-      </div>
-    </div>
-    <div class="row g-4">
-      <div class="col-lg-4">
-        <p class="skill-group-title"><i class="bi bi-display me-2"></i><span data-i18n="skills.frontend">Frontend</span></p>
-        <div>
-          <span class="skill-chip"><i class="bi bi-filetype-html"></i>HTML5</span>
-          <span class="skill-chip"><i class="bi bi-filetype-css"></i>CSS3</span>
-          <span class="skill-chip"><i class="bi bi-filetype-js"></i>JavaScript</span>
-          <span class="skill-chip"><i class="bi bi-lightning-charge"></i>React</span>
-          <span class="skill-chip"><i class="bi bi-bootstrap"></i>Bootstrap</span>
-          <span class="skill-chip"><i class="bi bi-wind"></i>Tailwind</span>
-          <span class="skill-chip"><i class="bi bi-filetype-tsx"></i>TypeScript</span>
-          <span class="skill-chip"><i class="bi bi-arrow-repeat"></i>Next.js</span>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <p class="skill-group-title"><i class="bi bi-server me-2"></i><span data-i18n="skills.backend">Backend</span></p>
-        <div>
-          <span class="skill-chip"><i class="bi bi-node-plus"></i>Node.js</span>
-          <span class="skill-chip"><i class="bi bi-braces"></i>Express</span>
-          <span class="skill-chip"><i class="bi bi-filetype-php"></i>PHP</span>
-          <span class="skill-chip"><i class="bi bi-database"></i>MySQL</span>
-          <span class="skill-chip"><i class="bi bi-database-fill"></i>MongoDB</span>
-          <span class="skill-chip"><i class="bi bi-hdd-network"></i>REST API</span>
-          <span class="skill-chip"><i class="bi bi-shield-lock"></i>JWT Auth</span>
-          <span class="skill-chip"><i class="bi bi-box"></i>Docker</span>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <p class="skill-group-title"><i class="bi bi-joystick me-2"></i><span data-i18n="skills.gamedev">Game Dev</span></p>
-        <div>
-          <span class="skill-chip"><i class="bi bi-unity"></i>Unity</span>
-          <span class="skill-chip"><i class="bi bi-code-square"></i>C#</span>
-          <span class="skill-chip"><i class="bi bi-diamond-half"></i>Godot</span>
-          <span class="skill-chip"><i class="bi bi-boxes"></i>3D Modeling</span>
-          <span class="skill-chip"><i class="bi bi-music-note-beamed"></i>Audio Design</span>
-          <span class="skill-chip"><i class="bi bi-map"></i>Level Design</span>
-          <span class="skill-chip"><i class="bi bi-people"></i>Game Design</span>
-          <span class="skill-chip"><i class="bi bi-controller"></i>Phaser.js</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="section-divider"></div>
-
-<!-- ─── PROJECTS ─── -->
-<section id="projects">
-  <div class="container">
-    <div class="row justify-content-center mb-4">
-      <div class="col-lg-8 text-center">
-        <p class="section-eyebrow" data-i18n="projects.eyebrow">// proyek pilihan</p>
-        <h2 class="section-title" data-i18n="projects.title">Yang Sudah Saya Bangun</h2>
-      </div>
-    </div>
-    <div class="d-flex justify-content-center gap-2 flex-wrap mb-5">
-      <button class="filter-btn active" data-filter="all" data-i18n="filter.all">Semua</button>
-      <button class="filter-btn" data-filter="web" data-i18n="filter.web">Web</button>
-      <button class="filter-btn" data-filter="game" data-i18n="filter.game">Game</button>
-      <button class="filter-btn" data-filter="tool" data-i18n="filter.tool">Tools</button>
-    </div>
-    <div class="row g-4" id="projectGrid">
-
-      <!-- Project 1 -->
-      <div class="col-md-6 col-xl-4 project-item" data-category="web">
-        <div class="project-card">
-          <div class="card-header-band"></div>
-          <div class="card-body">
-            <div class="project-icon"><i class="bi bi-shop"></i></div>
-            <h3 class="project-title" data-i18n="p1.title">EcommerceX</h3>
-            <p class="project-desc" data-i18n="p1.desc">Platform e-commerce fullstack dengan real-time inventory, cart sistem, dan payment gateway terintegrasi.</p>
-            <div class="mb-3">
-              <span class="project-tag">React</span>
-              <span class="project-tag">Node.js</span>
-              <span class="project-tag">MongoDB</span>
-              <span class="project-tag cyan">REST API</span>
-            </div>
-            <div class="project-links">
-              <a href="#" title="GitHub"><i class="bi bi-github"></i></a>
-              <a href="#" title="Live Demo"><i class="bi bi-box-arrow-up-right"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Project 2 -->
-      <div class="col-md-6 col-xl-4 project-item" data-category="game">
-        <div class="project-card">
-          <div class="card-header-band" style="background:linear-gradient(90deg,#06B6D4,#7C3AED)"></div>
-          <div class="card-body">
-            <div class="project-icon" style="background:linear-gradient(135deg,#06B6D4,#0891B2)"><i class="bi bi-asterisk"></i></div>
-            <h3 class="project-title" data-i18n="p2.title">Void Runner</h3>
-            <p class="project-desc" data-i18n="p2.desc">Game platformer 2D dengan sistem procedural generation level, partikel shader, dan leaderboard online.</p>
-            <div class="mb-3">
-              <span class="project-tag">Unity</span>
-              <span class="project-tag">C#</span>
-              <span class="project-tag cyan">Procedural</span>
-              <span class="project-tag cyan">Shader</span>
-            </div>
-            <div class="project-links">
-              <a href="#" title="GitHub"><i class="bi bi-github"></i></a>
-              <a href="#" title="Play"><i class="bi bi-play-circle"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Project 3 -->
-      <div class="col-md-6 col-xl-4 project-item" data-category="tool">
-        <div class="project-card">
-          <div class="card-header-band" style="background:linear-gradient(90deg,#10B981,#06B6D4)"></div>
-          <div class="card-body">
-            <div class="project-icon" style="background:linear-gradient(135deg,#10B981,#059669)"><i class="bi bi-download"></i></div>
-            <h3 class="project-title" data-i18n="p3.title">YT Downloader Pro</h3>
-            <p class="project-desc" data-i18n="p3.desc">Aplikasi desktop Python/Tkinter dengan yt-dlp, progress bar real-time, dan pilihan format video/audio.</p>
-            <div class="mb-3">
-              <span class="project-tag" style="color:#10B981;border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.1)">Python</span>
-              <span class="project-tag" style="color:#10B981;border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.1)">Tkinter</span>
-              <span class="project-tag cyan">yt-dlp</span>
-            </div>
-            <div class="project-links">
-              <a href="#" title="GitHub"><i class="bi bi-github"></i></a>
-              <a href="#" title="Download"><i class="bi bi-cloud-download"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Project 4 -->
-      <div class="col-md-6 col-xl-4 project-item" data-category="web">
-        <div class="project-card">
-          <div class="card-header-band"></div>
-          <div class="card-body">
-            <div class="project-icon"><i class="bi bi-chat-dots"></i></div>
-            <h3 class="project-title" data-i18n="p4.title">ChatApp Realtime</h3>
-            <p class="project-desc" data-i18n="p4.desc">Aplikasi chat real-time dengan WebSocket, room system, notifikasi, dan enkripsi end-to-end.</p>
-            <div class="mb-3">
-              <span class="project-tag">Socket.io</span>
-              <span class="project-tag">Express</span>
-              <span class="project-tag cyan">WebSocket</span>
-            </div>
-            <div class="project-links">
-              <a href="#" title="GitHub"><i class="bi bi-github"></i></a>
-              <a href="#" title="Live"><i class="bi bi-box-arrow-up-right"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Project 5 -->
-      <div class="col-md-6 col-xl-4 project-item" data-category="game">
-        <div class="project-card">
-          <div class="card-header-band" style="background:linear-gradient(90deg,#F59E0B,#EF4444)"></div>
-          <div class="card-body">
-            <div class="project-icon" style="background:linear-gradient(135deg,#F59E0B,#D97706)"><i class="bi bi-fire"></i></div>
-            <h3 class="project-title" data-i18n="p5.title">Dungeon Crawler</h3>
-            <p class="project-desc" data-i18n="p5.desc">Game RPG top-down dengan sistem AI musuh berbasis state machine, inventory, dan save system.</p>
-            <div class="mb-3">
-              <span class="project-tag">Godot</span>
-              <span class="project-tag cyan">GDScript</span>
-              <span class="project-tag cyan">AI</span>
-            </div>
-            <div class="project-links">
-              <a href="#" title="GitHub"><i class="bi bi-github"></i></a>
-              <a href="#" title="Play"><i class="bi bi-play-circle"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Project 6 -->
-      <div class="col-md-6 col-xl-4 project-item" data-category="web">
-        <div class="project-card">
-          <div class="card-header-band"></div>
-          <div class="card-body">
-            <div class="project-icon"><i class="bi bi-kanban"></i></div>
-            <h3 class="project-title" data-i18n="p6.title">Task Manager</h3>
-            <p class="project-desc" data-i18n="p6.desc">Aplikasi manajemen tugas dengan drag-and-drop, tim kolaborasi, deadline notif, dan dark mode.</p>
-            <div class="mb-3">
-              <span class="project-tag">Next.js</span>
-              <span class="project-tag">Prisma</span>
-              <span class="project-tag cyan">PostgreSQL</span>
-            </div>
-            <div class="project-links">
-              <a href="#" title="GitHub"><i class="bi bi-github"></i></a>
-              <a href="#" title="Live"><i class="bi bi-box-arrow-up-right"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<div class="section-divider"></div>
-
-<!-- ─── EXPERIENCE ─── -->
-<section id="experience" style="background: var(--bg2)">
-  <div class="container">
-    <div class="row justify-content-center mb-5">
-      <div class="col-lg-8 text-center">
-        <p class="section-eyebrow" data-i18n="exp.eyebrow">// perjalanan</p>
-        <h2 class="section-title" data-i18n="exp.title">Pengalaman</h2>
-      </div>
-    </div>
-    <div class="row justify-content-center">
-      <div class="col-lg-8">
-        <div class="timeline">
-
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <p class="timeline-date" data-i18n="exp1.date">2024 — Sekarang</p>
-            <h3 class="timeline-role" data-i18n="exp1.role">Freelance Fullstack Developer</h3>
-            <p class="timeline-company"><i class="bi bi-building me-1"></i><span data-i18n="exp1.co">Independen</span></p>
-            <p class="timeline-desc" data-i18n="exp1.desc">Membangun aplikasi web custom untuk klien lokal — dari landing page hingga sistem manajemen internal dengan React dan Node.js.</p>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-dot" style="background:var(--accent-2);box-shadow:0 0 0 2px var(--accent-2)"></div>
-            <p class="timeline-date" data-i18n="exp2.date">2023 — 2024</p>
-            <h3 class="timeline-role" data-i18n="exp2.role">Game Developer — Indie Studio</h3>
-            <p class="timeline-company"><i class="bi bi-building me-1"></i><span data-i18n="exp2.co">Pixel Realm Studio</span></p>
-            <p class="timeline-desc" data-i18n="exp2.desc">Mengembangkan 2 game mobile dengan Unity. Bertanggung jawab atas gameplay programming, level design, dan sistem skor.</p>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-dot"></div>
-            <p class="timeline-date" data-i18n="exp3.date">2022 — 2023</p>
-            <h3 class="timeline-role" data-i18n="exp3.role">Junior Web Developer</h3>
-            <p class="timeline-company"><i class="bi bi-building me-1"></i><span data-i18n="exp3.co">Tech Startup Lokal</span></p>
-            <p class="timeline-desc" data-i18n="exp3.desc">Memulai karir dengan membangun UI komponen, mengintegrasikan REST API, dan belajar praktik pengembangan kolaboratif dengan Git.</p>
-          </div>
-
-          <div class="timeline-item">
-            <div class="timeline-dot" style="background:var(--accent-2);box-shadow:0 0 0 2px var(--accent-2)"></div>
-            <p class="timeline-date" data-i18n="exp4.date">2021</p>
-            <h3 class="timeline-role" data-i18n="exp4.role">Mulai Belajar Ngoding</h3>
-            <p class="timeline-company"><i class="bi bi-mortarboard me-1"></i><span data-i18n="exp4.co">Self-taught</span></p>
-            <p class="timeline-desc" data-i18n="exp4.desc">Perjalanan dimulai dari HTML, CSS, JavaScript dasar — hingga bereksperimen dengan game sederhana di Unity.</p>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="section-divider"></div>
-
-<!-- ─── CONTACT ─── -->
-<section id="contact" class="contact-section">
-  <div class="container">
-    <div class="row gy-5 align-items-center">
-      <div class="col-lg-6">
-        <p class="section-eyebrow" data-i18n="contact.eyebrow">// ngobrol yuk</p>
-        <h2 class="cta-mega mb-3">
-          <span data-i18n="contact.title1">Ada proyek</span><br>
-          <span class="text-accent" data-i18n="contact.title2">dalam pikiran?</span>
-        </h2>
-        <p class="text-muted-custom mb-4" data-i18n="contact.desc">Saya selalu terbuka untuk kolaborasi, freelance, atau sekadar ngobrol soal tech & game. Drop a message!</p>
-        <div class="d-flex gap-3 flex-wrap">
-          <a href="https://github.com" target="_blank" class="btn-outline-accent" style="font-size:0.8rem;padding:0.5rem 1.2rem">
-            <i class="bi bi-github"></i>GitHub
-          </a>
-          <a href="https://linkedin.com" target="_blank" class="btn-outline-accent" style="font-size:0.8rem;padding:0.5rem 1.2rem">
-            <i class="bi bi-linkedin"></i>LinkedIn
-          </a>
-        </div>
-      </div>
-      <div class="col-lg-5 offset-lg-1">
-        <a href="mailto:suo@dev.com" class="contact-link">
-          <i class="bi bi-envelope-fill"></i>
-          <div>
-            <div class="link-label" data-i18n="contact.email">Email</div>
-            <div class="link-value">suo@dev.com</div>
-          </div>
-          <i class="bi bi-arrow-right ms-auto" style="color:var(--text-muted);font-size:0.9rem"></i>
-        </a>
-        <a href="https://wa.me/628xxxxxxxxx" target="_blank" class="contact-link">
-          <i class="bi bi-whatsapp"></i>
-          <div>
-            <div class="link-label">WhatsApp</div>
-            <div class="link-value">+62 8xx-xxxx-xxxx</div>
-          </div>
-          <i class="bi bi-arrow-right ms-auto" style="color:var(--text-muted);font-size:0.9rem"></i>
-        </a>
-        <a href="https://discord.com" target="_blank" class="contact-link">
-          <i class="bi bi-discord"></i>
-          <div>
-            <div class="link-label">Discord</div>
-            <div class="link-value">suo#dev</div>
-          </div>
-          <i class="bi bi-arrow-right ms-auto" style="color:var(--text-muted);font-size:0.9rem"></i>
-        </a>
-        <a href="#" class="contact-link">
-          <i class="bi bi-file-earmark-person-fill"></i>
-          <div>
-            <div class="link-label" data-i18n="contact.cv">Resume / CV</div>
-            <div class="link-value" data-i18n="contact.cv.val">Download PDF</div>
-          </div>
-          <i class="bi bi-download ms-auto" style="color:var(--text-muted);font-size:0.9rem"></i>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── FOOTER ─── -->
-<footer>
-  <div class="container">
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
-      <span style="font-family:var(--font-display);font-weight:800;font-size:1rem;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">suo.dev</span>
-      <span data-i18n="footer.copy">© 2024 Suo. Dibuat dengan ☕ dan banyak debuggin.</span>
-      <div class="d-flex gap-3">
-        <a href="https://github.com" style="color:var(--text-muted)" target="_blank"><i class="bi bi-github fs-5"></i></a>
-        <a href="https://linkedin.com" style="color:var(--text-muted)" target="_blank"><i class="bi bi-linkedin fs-5"></i></a>
-        <a href="https://twitter.com" style="color:var(--text-muted)" target="_blank"><i class="bi bi-twitter-x fs-5"></i></a>
-      </div>
-    </div>
-  </div>
+<footer class="wrap">
+  © <span id="year"></span> Adit Kurnia. Dibuat dengan HTML, CSS &amp; JS.
 </footer>
 
-<!-- ─── BACK TO TOP ─── -->
-<button id="backToTop" title="Back to top"><i class="bi bi-chevron-up"></i></button>
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
-// ─── i18n ───
-const translations = {
-  id: {
-    "nav.about":"Tentang","nav.skills":"Keahlian","nav.projects":"Proyek","nav.experience":"Pengalaman","nav.contact":"Kontak",
-    "hero.eyebrow":"Fullstack Developer & Game Developer",
-    "hero.greeting":"Halo, saya",
-    "hero.desc":"Membangun aplikasi web yang kencang dan pengalaman game yang imersif — dari server ke shader.",
-    "hero.cta1":"Lihat Proyek","hero.cta2":"Kontak Saya",
-    "stat.projects":"Proyek","stat.games":"Game","stat.years":"Tahun Aktif",
-    "about.eyebrow":"// tentang saya","about.title":"Kode & Kreativitas","about.subtitle":"Dua dunia, satu developer.",
-    "about.card1.title":"Siapa Saya",
-    "about.card1.p1":"Saya seorang developer yang hidup di persimpangan antara web engineering dan pengembangan game. Saya percaya bahwa software yang baik bukan hanya soal fungsi — tapi soal pengalaman yang ditinggalkan pada penggunanya.",
-    "about.card1.p2":"Ketika tidak sedang menulis API atau membangun antarmuka, saya merancang mekanik game dan mengeksplorasi bagaimana interaktivitas bisa menjadi medium bercerita yang kuat.",
-    "about.card2.title":"Fullstack Web","about.card2.desc":"React, Node.js, database, REST API, deployment — end-to-end.",
-    "about.card3.title":"Game Development","about.card3.desc":"Unity, C#, Godot, game design, physics, level design, dan storytelling.",
-    "about.card4.title":"Tools & Infra","about.card4.desc":"Git, Docker, Linux, CI/CD — membangun dengan solid dari awal.",
-    "skills.eyebrow":"// tech stack","skills.title":"Senjata Andalanku",
-    "skills.frontend":"Frontend","skills.backend":"Backend","skills.gamedev":"Game Dev",
-    "projects.eyebrow":"// proyek pilihan","projects.title":"Yang Sudah Saya Bangun",
-    "filter.all":"Semua","filter.web":"Web","filter.game":"Game","filter.tool":"Tools",
-    "p1.title":"EcommerceX","p1.desc":"Platform e-commerce fullstack dengan real-time inventory, cart sistem, dan payment gateway terintegrasi.",
-    "p2.title":"Void Runner","p2.desc":"Game platformer 2D dengan sistem procedural generation level, partikel shader, dan leaderboard online.",
-    "p3.title":"YT Downloader Pro","p3.desc":"Aplikasi desktop Python/Tkinter dengan yt-dlp, progress bar real-time, dan pilihan format video/audio.",
-    "p4.title":"ChatApp Realtime","p4.desc":"Aplikasi chat real-time dengan WebSocket, room system, notifikasi, dan enkripsi end-to-end.",
-    "p5.title":"Dungeon Crawler","p5.desc":"Game RPG top-down dengan sistem AI musuh berbasis state machine, inventory, dan save system.",
-    "p6.title":"Task Manager","p6.desc":"Aplikasi manajemen tugas dengan drag-and-drop, tim kolaborasi, deadline notif, dan dark mode.",
-    "exp.eyebrow":"// perjalanan","exp.title":"Pengalaman",
-    "exp1.date":"2024 — Sekarang","exp1.role":"Freelance Fullstack Developer","exp1.co":"Independen","exp1.desc":"Membangun aplikasi web custom untuk klien lokal — dari landing page hingga sistem manajemen internal dengan React dan Node.js.",
-    "exp2.date":"2023 — 2024","exp2.role":"Game Developer — Indie Studio","exp2.co":"Pixel Realm Studio","exp2.desc":"Mengembangkan 2 game mobile dengan Unity. Bertanggung jawab atas gameplay programming, level design, dan sistem skor.",
-    "exp3.date":"2022 — 2023","exp3.role":"Junior Web Developer","exp3.co":"Tech Startup Lokal","exp3.desc":"Memulai karir dengan membangun UI komponen, mengintegrasikan REST API, dan belajar praktik pengembangan kolaboratif dengan Git.",
-    "exp4.date":"2021","exp4.role":"Mulai Belajar Ngoding","exp4.co":"Self-taught","exp4.desc":"Perjalanan dimulai dari HTML, CSS, JavaScript dasar — hingga bereksperimen dengan game sederhana di Unity.",
-    "contact.eyebrow":"// ngobrol yuk","contact.title1":"Ada proyek","contact.title2":"dalam pikiran?",
-    "contact.desc":"Saya selalu terbuka untuk kolaborasi, freelance, atau sekadar ngobrol soal tech & game. Drop a message!",
-    "contact.email":"Email","contact.cv":"Resume / CV","contact.cv.val":"Download PDF",
-    "footer.copy":"© 2024 Suo. Dibuat dengan ☕ dan banyak debuggin.",
-    "typewriter": ["Membangun web yang cepat & scalable.", "Merancang game yang seru.", "Menulis kode yang bersih.", "Belajar setiap hari."]
-  },
-  en: {
-    "nav.about":"About","nav.skills":"Skills","nav.projects":"Projects","nav.experience":"Experience","nav.contact":"Contact",
-    "hero.eyebrow":"Fullstack Developer & Game Developer",
-    "hero.greeting":"Hi, I'm",
-    "hero.desc":"Building blazing-fast web apps and immersive game experiences — from server to shader.",
-    "hero.cta1":"View Projects","hero.cta2":"Contact Me",
-    "stat.projects":"Projects","stat.games":"Games","stat.years":"Years Active",
-    "about.eyebrow":"// about me","about.title":"Code & Creativity","about.subtitle":"Two worlds, one developer.",
-    "about.card1.title":"Who I Am",
-    "about.card1.p1":"I'm a developer who lives at the intersection of web engineering and game development. I believe great software isn't just about function — it's about the experience it leaves on its users.",
-    "about.card1.p2":"When not writing APIs or crafting interfaces, I design game mechanics and explore how interactivity can become a powerful medium for storytelling.",
-    "about.card2.title":"Fullstack Web","about.card2.desc":"React, Node.js, databases, REST API, deployment — end-to-end.",
-    "about.card3.title":"Game Development","about.card3.desc":"Unity, C#, Godot, game design, physics, level design, and storytelling.",
-    "about.card4.title":"Tools & Infra","about.card4.desc":"Git, Docker, Linux, CI/CD — building solid from the ground up.",
-    "skills.eyebrow":"// tech stack","skills.title":"My Arsenal",
-    "skills.frontend":"Frontend","skills.backend":"Backend","skills.gamedev":"Game Dev",
-    "projects.eyebrow":"// featured projects","projects.title":"What I've Built",
-    "filter.all":"All","filter.web":"Web","filter.game":"Game","filter.tool":"Tools",
-    "p1.title":"EcommerceX","p1.desc":"Fullstack e-commerce platform with real-time inventory, cart system, and integrated payment gateway.",
-    "p2.title":"Void Runner","p2.desc":"2D platformer game with procedural level generation system, particle shaders, and online leaderboard.",
-    "p3.title":"YT Downloader Pro","p3.desc":"Python/Tkinter desktop app using yt-dlp with real-time progress bar and video/audio format selection.",
-    "p4.title":"Realtime ChatApp","p4.desc":"Real-time chat application with WebSocket, room system, notifications, and end-to-end encryption.",
-    "p5.title":"Dungeon Crawler","p5.desc":"Top-down RPG game with state machine enemy AI, inventory system, and save functionality.",
-    "p6.title":"Task Manager","p6.desc":"Task management app with drag-and-drop, team collaboration, deadline notifications, and dark mode.",
-    "exp.eyebrow":"// journey","exp.title":"Experience",
-    "exp1.date":"2024 — Present","exp1.role":"Freelance Fullstack Developer","exp1.co":"Independent","exp1.desc":"Building custom web applications for local clients — from landing pages to internal management systems with React and Node.js.",
-    "exp2.date":"2023 — 2024","exp2.role":"Game Developer — Indie Studio","exp2.co":"Pixel Realm Studio","exp2.desc":"Developed 2 mobile games with Unity. Responsible for gameplay programming, level design, and scoring systems.",
-    "exp3.date":"2022 — 2023","exp3.role":"Junior Web Developer","exp3.co":"Local Tech Startup","exp3.desc":"Started career building UI components, integrating REST APIs, and learning collaborative development practices with Git.",
-    "exp4.date":"2021","exp4.role":"Started Learning to Code","exp4.co":"Self-taught","exp4.desc":"Journey began with HTML, CSS, basic JavaScript — then experimenting with simple games in Unity.",
-    "contact.eyebrow":"// let's talk","contact.title1":"Got a project","contact.title2":"in mind?",
-    "contact.desc":"I'm always open to collaboration, freelance work, or just chatting about tech & games. Drop a message!",
-    "contact.email":"Email","contact.cv":"Resume / CV","contact.cv.val":"Download PDF",
-    "footer.copy":"© 2024 Suo. Built with ☕ and lots of debuggin.",
-    "typewriter": ["Building fast & scalable web apps.", "Designing fun games.", "Writing clean code.", "Learning every day."]
-  }
-};
-
-let currentLang = 'id';
-let currentTheme = 'dark';
-
-function applyTranslations(lang) {
-  const t = translations[lang];
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (t[key]) el.textContent = t[key];
-  });
-  document.documentElement.setAttribute('data-lang', lang);
-  document.documentElement.setAttribute('lang', lang);
-  document.getElementById('langLabel').textContent = lang === 'id' ? 'EN' : 'ID';
-  // Restart typewriter with new lang
-  typewriterPhrases = t['typewriter'];
-  phraseIndex = 0; charIndex = 0; isDeleting = false;
-}
-
-// ─── Theme Toggle ───
-document.getElementById('themeToggle').addEventListener('click', () => {
-  currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-bs-theme', currentTheme);
-  document.getElementById('themeIcon').className = currentTheme === 'dark' ? 'bi bi-moon-stars-fill' : 'bi bi-sun-fill';
-});
-
-// ─── Lang Toggle ───
-document.getElementById('langToggle').addEventListener('click', () => {
-  currentLang = currentLang === 'id' ? 'en' : 'id';
-  applyTranslations(currentLang);
-});
-
-// ─── Typewriter ───
-let typewriterPhrases = translations.id.typewriter;
-let phraseIndex = 0, charIndex = 0, isDeleting = false;
-const typeEl = document.getElementById('typewriterText');
-
-function typewriter() {
-  const current = typewriterPhrases[phraseIndex];
-  if (isDeleting) {
-    typeEl.textContent = current.substring(0, charIndex - 1);
-    charIndex--;
-  } else {
-    typeEl.textContent = current.substring(0, charIndex + 1);
-    charIndex++;
-  }
-  if (!isDeleting && charIndex === current.length) {
-    setTimeout(() => { isDeleting = true; }, 1800);
-  } else if (isDeleting && charIndex === 0) {
-    isDeleting = false;
-    phraseIndex = (phraseIndex + 1) % typewriterPhrases.length;
-  }
-  setTimeout(typewriter, isDeleting ? 50 : 80);
-}
-typewriter();
-
-// ─── Project Filter ───
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', function() {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    this.classList.add('active');
-    const filter = this.getAttribute('data-filter');
-    document.querySelectorAll('.project-item').forEach(item => {
-      if (filter === 'all' || item.getAttribute('data-category') === filter) {
-        item.style.display = '';
-      } else {
-        item.style.display = 'none';
-      }
+  // Mobile nav toggle
+  var toggle = document.getElementById('navToggle');
+  var links = document.getElementById('navLinks');
+  if (toggle) {
+    toggle.addEventListener('click', function () {
+      var open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
-  });
-});
+    links.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        links.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
 
-// ─── Back to Top ───
-const btt = document.getElementById('backToTop');
-window.addEventListener('scroll', () => {
-  btt.classList.toggle('show', window.scrollY > 400);
-});
-btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-// ─── Navbar active link ───
-const sections = document.querySelectorAll('section[id]');
-window.addEventListener('scroll', () => {
-  let current = '';
-  sections.forEach(s => {
-    if (window.scrollY >= s.offsetTop - 120) current = s.id;
-  });
-  document.querySelectorAll('.nav-link').forEach(link => {
-    link.classList.remove('active');
-    if (link.getAttribute('href') === '#' + current) link.classList.add('active');
-  });
-});
-
-// ─── Collapse navbar on mobile link click ───
-document.querySelectorAll('.nav-link').forEach(link => {
-  link.addEventListener('click', () => {
-    const collapse = document.getElementById('navMenu');
-    if (collapse.classList.contains('show')) {
-      new bootstrap.Collapse(collapse).hide();
+  // Auto-updating age, recalculated from birthdate every time the page loads
+  (function () {
+    try {
+      var birth = new Date(2008, 10, 9); // 9 November 2008 (month is 0-indexed)
+      var now = new Date();
+      var age = now.getFullYear() - birth.getFullYear();
+      var hasHadBirthdayThisYear =
+        now.getMonth() > birth.getMonth() ||
+        (now.getMonth() === birth.getMonth() && now.getDate() >= birth.getDate());
+      if (!hasHadBirthdayThisYear) age -= 1;
+      document.getElementById('age-value').textContent = age + ' tahun';
+    } catch (e) {
+      document.getElementById('age-value').textContent = '—';
     }
-  });
-});
+  })();
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Skill ring: click a badge to reveal info, pauses the ring while open
+  (function () {
+    var ring = document.getElementById('skillRing');
+    var panel = document.getElementById('skillInfo');
+    var iconEl = document.getElementById('skillInfoIcon');
+    var titleEl = document.getElementById('skillInfoTitle');
+    var descEl = document.getElementById('skillInfoDesc');
+    var closeBtn = document.getElementById('skillInfoClose');
+    var badges = document.querySelectorAll('.node-badge');
+    var activeBtn = null;
+
+    function closePanel() {
+      panel.classList.remove('show');
+      ring.classList.remove('is-open');
+      if (activeBtn) { activeBtn.classList.remove('active'); activeBtn.setAttribute('aria-pressed', 'false'); }
+      activeBtn = null;
+    }
+
+    function openPanel(btn) {
+      iconEl.innerHTML = btn.querySelector('svg') ? btn.querySelector('svg').outerHTML : '';
+      titleEl.textContent = btn.getAttribute('data-name') || '';
+      descEl.textContent = btn.getAttribute('data-desc') || '';
+      panel.classList.add('show');
+      ring.classList.add('is-open');
+      if (activeBtn && activeBtn !== btn) { activeBtn.classList.remove('active'); activeBtn.setAttribute('aria-pressed', 'false'); }
+      btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
+      activeBtn = btn;
+    }
+
+    badges.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (activeBtn === btn) { closePanel(); }
+        else { openPanel(btn); }
+      });
+    });
+
+    closeBtn.addEventListener('click', closePanel);
+  })();
 </script>
+
 </body>
 </html>
