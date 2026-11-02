@@ -245,3 +245,12 @@ function kodeLain_(ss, action, kode) {
   SpreadsheetApp.flush();
   return out({ ok: true, segment: seg - 1, prize: 'ZONK', zonk: true });
 }
+
+/** Nomor baris terakhir yang kolom A-nya berisi (abaikan checkbox/kolom lain). */
+function lastRowA_(sh) {
+  const v = sh.getRange(1, 1, sh.getMaxRows(), 1).getValues();
+  for (let i = v.length - 1; i >= 1; i--) {
+    if (String(v[i][0]).trim() !== '') return i + 1;
+  }
+  return 1;
+}
