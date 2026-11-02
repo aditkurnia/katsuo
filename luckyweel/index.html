@@ -79,6 +79,7 @@ p.s{margin:0 0 16px;color:var(--muted);font-weight:700;font-size:.95rem;line-hei
 .btn.sm{font-size:1rem;min-height:42px;margin-top:0;width:auto;padding:6px 16px 4px;box-shadow:0 4px 0 var(--ink)}
 .err{min-height:1.3em;margin:10px 0 0;font-weight:800;color:#d3123f;font-size:.92rem;text-align:center}
 .err.l{text-align:left}
+.sheet p.err{color:#d3123f;margin:10px 0 0;font-size:.92rem}
 
 /* ---------- prizes ---------- */
 .grid{display:grid;gap:12px;grid-template-columns:repeat(2,1fr)}
@@ -264,7 +265,7 @@ p.s{margin:0 0 16px;color:var(--muted);font-weight:700;font-size:.95rem;line-hei
 /* =====================  PENGATURAN  ===================== */
 const CONFIG = {
   BRAND: 'Es Kami',   // nama produk
-  API_URL: 'https://script.google.com/macros/s/AKfycbwUH4CJk0k4GJGfo6-m5tCiiyB_AK0xs-DTo1WTA4BOsk5mEUcN4ewxcNzZTpc4298ReA/exec',        // URL Web App Google Apps Script (lihat PANDUAN.md)
+  API_URL: 'https://script.google.com/macros/s/AKfycbxq8U4CyYW9nPi12s_M-_ke8UJZEkEaNrby-N4CoscRtzueI2kvmbGHRl-ubvv3u68xgg/exec',        // URL Web App Google Apps Script (lihat PANDUAN.md)
   SPIN_MS: 6000       // samakan dengan transition di CSS (.wheel)
 };
 const TINGKAT = ['10','11'];
@@ -353,9 +354,11 @@ async function api(action, params){
   const ctrl = new AbortController(), to = setTimeout(()=>ctrl.abort(), 20000);
   try{
     const r = await fetch(CONFIG.API_URL + '?action=' + action + '&' + q, {signal:ctrl.signal});
-    return await r.json();
+    const txt = await r.text();
+    try{ return JSON.parse(txt); }
+    catch(e){ return {ok:false, code:'BADRESP', message:'Server belum siap: pastikan Web App Apps Script di-deploy dengan akses "Anyone" dan pakai URL berakhiran /exec.'}; }
   }catch(e){
-    return {ok:false, code:'NET', message:'Koneksi bermasalah. Periksa internet lalu coba lagi.'};
+    return {ok:false, code:'NET', message:'Tidak bisa terhubung ke server. Periksa internet. Jika tetap gagal, cek pengaturan deploy Apps Script (akses harus "Anyone").'};
   }finally{ clearTimeout(to); }
 }
 

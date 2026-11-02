@@ -113,6 +113,22 @@ function out(obj) {
 }
 
 function doGet(e) {
+  try {
+    return handle_(e);
+  } catch (err) {
+    // tampilkan penyebab error asli ke website, bukan halaman error Google
+    return out({ ok: false, code: 'ERR', message: 'Error server: ' + err.message });
+  }
+}
+
+/** Jalankan SEKALI dari editor (pilih fungsi ini lalu Run) untuk memberi izin akses Sheet & Lock. */
+function izinkan() {
+  LockService.getScriptLock();
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  Logger.log('OK, sheet: ' + ss.getName());
+}
+
+function handle_(e) {
   const p = (e && e.parameter) || {};
   const action = p.action;
   if (['redeem', 'spin', 'klaim'].indexOf(action) < 0) return out({ ok: true, message: 'Lucky Wheel API aktif' });
