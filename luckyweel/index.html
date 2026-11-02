@@ -1,1 +1,425 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lucky Wheel Es Kami – Putar & Menangkan Hadiah</title>
+<meta name="description" content="Masukkan kode redeem dari kemasan es kami, putar roda, dan menangkan hadiah.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#3b1410;          /* garis tebal ala aset */
+  --pink:#ff4f8b;
+  --pink-soft:#ffe3ee;
+  --bg:#fff4f8;
+  --gold:#ffc21a;
+  --gold-deep:#f59a00;
+  --sky:#2bc4ff;
+  --white:#fff;
+  --muted:#7a4a55;
+  --font-display:'Baloo 2','Trebuchet MS',system-ui,sans-serif;
+  --font-body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;font-family:var(--font-body);color:var(--ink);background:var(--bg);
+  background-image:radial-gradient(var(--pink-soft) 2px,transparent 2.5px);
+  background-size:26px 26px;
+  min-height:100vh;
+}
+img{max-width:100%;display:block}
+:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
 
+.wrap{max-width:1080px;margin:0 auto;padding:20px 18px 56px}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.brand{font-family:var(--font-display);font-weight:800;font-size:1.25rem;display:flex;align-items:center;gap:8px}
+.brand img{width:34px;height:auto}
+.demo-badge{display:none;font-weight:800;font-size:.8rem;background:var(--gold);border:2px solid var(--ink);border-radius:999px;padding:4px 12px}
+.demo-badge.on{display:inline-block}
+
+/* main layout */
+.main{display:grid;gap:28px;align-items:center;grid-template-columns:1fr}
+@media(min-width:900px){.main{grid-template-columns:1.05fr .95fr;gap:48px}}
+
+h1{
+  font-family:var(--font-display);font-weight:800;line-height:1;margin:6px 0 10px;
+  font-size:clamp(2.3rem,8vw,3.8rem);color:var(--white);
+  -webkit-text-stroke:0;
+  text-shadow:
+    -3px -3px 0 var(--ink),3px -3px 0 var(--ink),-3px 3px 0 var(--ink),3px 3px 0 var(--ink),
+    0 5px 0 var(--ink),0 8px 0 var(--pink);
+  letter-spacing:.01em;
+}
+.lead{font-size:1.05rem;line-height:1.5;margin:0 0 20px;max-width:34ch;color:var(--muted);font-weight:700}
+
+/* wheel */
+.stage{position:relative;display:grid;place-items:center;padding:8px 0 4px}
+.stage::before{
+  content:"";position:absolute;inset:-6% -4%;z-index:0;border-radius:50%;
+  background:repeating-conic-gradient(from 0deg,rgba(255,79,139,.16) 0 9deg,transparent 9deg 18deg);
+  -webkit-mask-image:radial-gradient(circle,#000 38%,transparent 71%);
+  mask-image:radial-gradient(circle,#000 38%,transparent 71%);
+}
+.wheel-box{position:relative;z-index:1;width:min(88vw,440px);container-type:inline-size}
+.pointer{position:absolute;z-index:3;top:-3.5%;left:50%;width:15%;transform:translateX(-50%);
+  filter:drop-shadow(0 4px 0 rgba(59,20,16,.35));transform-origin:50% 20%}
+.pointer.tick{animation:tick .12s ease-out}
+@keyframes tick{0%{transform:translateX(-50%) rotate(0)}40%{transform:translateX(-50%) rotate(-14deg)}100%{transform:translateX(-50%) rotate(0)}}
+.wheel{
+  position:relative;aspect-ratio:900/892;width:100%;
+  transition:transform 6s cubic-bezier(.08,.62,.08,1);
+  will-change:transform;
+  filter:drop-shadow(0 12px 0 rgba(59,20,16,.18));
+}
+.wheel>img.base{position:absolute;inset:0;width:100%;height:100%}
+.slot{position:absolute;inset:0;pointer-events:none}
+.slot .lbl{
+  position:absolute;left:50%;top:9.6%;transform:translateX(-50%);
+  width:26%;text-align:center;font-family:var(--font-display);font-weight:800;
+  font-size:2.5cqw;line-height:1;color:#fff;
+  text-shadow:-1px -1px 0 var(--ink),1px -1px 0 var(--ink),-1px 1px 0 var(--ink),1px 1px 0 var(--ink),0 2px 0 var(--ink);
+}
+.slot .ico{
+  position:absolute;left:50%;top:15.5%;transform:translateX(-50%);
+  width:15.5%;height:15.5%;object-fit:contain;
+  filter:drop-shadow(0 2px 0 rgba(59,20,16,.45));
+}
+
+/* form */
+.panel{
+  background:var(--white);border:3px solid var(--ink);border-radius:22px;
+  box-shadow:0 7px 0 var(--ink);padding:22px 20px 22px;
+}
+.panel h2{font-family:var(--font-display);font-weight:800;font-size:1.5rem;margin:0 0 4px;display:flex;gap:10px;align-items:center}
+.panel h2 img{width:42px;height:auto;transform:rotate(-8deg)}
+.panel p.sub{margin:0 0 16px;color:var(--muted);font-weight:700;font-size:.95rem}
+label{display:block;font-weight:800;font-size:.9rem;margin:12px 0 6px}
+input{
+  width:100%;font:inherit;font-weight:700;color:var(--ink);padding:13px 14px;
+  border:3px solid var(--ink);border-radius:14px;background:#fffafc;
+}
+input::placeholder{color:#c49aa8;font-weight:600}
+input.code{font-family:var(--font-display);font-size:1.25rem;letter-spacing:.08em;text-transform:uppercase}
+.err{min-height:1.4em;margin:10px 0 0;font-weight:800;color:#d3123f;font-size:.92rem}
+.btn{
+  width:100%;margin-top:12px;font-family:var(--font-display);font-weight:800;font-size:1.5rem;letter-spacing:.03em;
+  color:var(--ink);background:linear-gradient(#ffd84d,var(--gold));
+  border:3px solid var(--ink);border-radius:16px;padding:12px 16px 10px;cursor:pointer;
+  box-shadow:0 6px 0 var(--ink);transition:transform .08s,box-shadow .08s;
+}
+.btn:active:not(:disabled){transform:translateY(5px);box-shadow:0 1px 0 var(--ink)}
+.btn:disabled{filter:grayscale(.6) brightness(1.05);cursor:not-allowed}
+
+/* prizes */
+.prizes{margin-top:52px}
+.prizes h2{font-family:var(--font-display);font-weight:800;font-size:clamp(1.7rem,5vw,2.3rem);margin:0 0 6px}
+.prizes p{margin:0 0 20px;color:var(--muted);font-weight:700}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(2,1fr)}
+@media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}}
+.tile{
+  border:3px solid var(--ink);border-radius:18px;padding:14px 10px 12px;text-align:center;
+  background:var(--c,#fff);box-shadow:0 5px 0 var(--ink);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.tile .pic{height:92px;display:grid;place-items:center;width:100%}
+.tile img{max-height:92px;width:auto;max-width:90%;object-fit:contain;filter:drop-shadow(0 3px 0 rgba(59,20,16,.25))}
+.tile b{font-family:var(--font-display);font-size:1.05rem;line-height:1.1}
+.tile.big{grid-column:span 2}
+.tile.big .pic,.tile.big img{height:110px;max-height:110px}
+.tile.zonk{background:#f3ecee}
+
+/* steps */
+.steps{margin:48px 0 0;display:grid;gap:12px;counter-reset:s;padding:0;list-style:none}
+@media(min-width:700px){.steps{grid-template-columns:repeat(3,1fr)}}
+.steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start;font-weight:700;line-height:1.35}
+.steps li::before{
+  content:counter(s);flex:none;width:34px;height:34px;border-radius:50%;
+  background:var(--pink);color:#fff;border:3px solid var(--ink);display:grid;place-items:center;
+  font-family:var(--font-display);font-weight:800;
+}
+footer{margin-top:44px;font-size:.85rem;color:var(--muted);font-weight:700}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:50;display:none;place-items:center;padding:20px;background:rgba(59,20,16,.62)}
+.modal.open{display:grid}
+.card{
+  position:relative;width:min(420px,100%);background:#fff;border:4px solid var(--ink);border-radius:26px;
+  box-shadow:0 9px 0 var(--ink);padding:26px 22px 22px;text-align:center;
+  animation:pop .35s cubic-bezier(.2,1.4,.4,1);
+}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.card .prize-img{height:150px;margin:0 auto 6px;display:grid;place-items:center}
+.card .prize-img img{max-height:150px;width:auto;max-width:80%;object-fit:contain;filter:drop-shadow(0 4px 0 rgba(59,20,16,.3))}
+.card h3{font-family:var(--font-display);font-weight:800;font-size:1.9rem;line-height:1.05;margin:4px 0 8px}
+.card .name{font-family:var(--font-display);font-weight:800;font-size:1.35rem;color:var(--pink);margin:0 0 10px}
+.card p{margin:0 0 14px;line-height:1.45;font-weight:700;color:var(--muted)}
+.card .btn{font-size:1.2rem;margin-top:8px}
+.btn.wa{background:linear-gradient(#5cf08a,#25d366)}
+.btn.ghost{background:#fff;box-shadow:0 4px 0 var(--ink);font-size:1.05rem}
+.code-chip{display:inline-block;font-family:var(--font-display);font-weight:800;letter-spacing:.08em;background:var(--pink-soft);border:2px dashed var(--ink);border-radius:10px;padding:4px 12px;margin-bottom:12px}
+#confetti{position:fixed;inset:0;z-index:60;pointer-events:none}
+
+@media(prefers-reduced-motion:reduce){
+  .wheel{transition-duration:1.2s}
+  .card{animation:none}
+  .pointer.tick{animation:none}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top">
+    <div class="brand"><img src="assets/ticket.png" alt=""><span id="brandName">Es Kami</span></div>
+    <span class="demo-badge" id="demoBadge">Mode demo</span>
+  </div>
+
+  <div class="main">
+    <section>
+      <h1>Putar &amp;<br>Menang!</h1>
+      <p class="lead">Punya kode redeem di kemasan es kami? Masukkan kodenya, putar roda, dan lihat hadiahmu.</p>
+
+      <div class="panel">
+        <h2><img src="assets/ticket.png" alt="">Klaim kodemu</h2>
+        <p class="sub">Satu kode berlaku untuk satu kali putar.</p>
+        <form id="form" novalidate autocomplete="off">
+          <label for="kode">Kode redeem</label>
+          <input id="kode" class="code" type="text" inputmode="text" autocapitalize="characters" maxlength="24" placeholder="ES-XXXX-XXXX" required>
+          <label for="nama">Nama kamu</label>
+          <input id="nama" type="text" maxlength="40" placeholder="Nama lengkap" required>
+          <label for="wa">Nomor WhatsApp</label>
+          <input id="wa" type="tel" inputmode="tel" maxlength="16" placeholder="08xxxxxxxxxx" required>
+          <p class="err" id="err" role="alert" aria-live="polite"></p>
+          <button class="btn" id="spinBtn" type="submit">PUTAR!</button>
+        </form>
+      </div>
+    </section>
+
+    <div class="stage">
+      <div class="wheel-box" id="wheelBox">
+        <img class="pointer" id="pointer" src="assets/pointer.png" alt="Penunjuk hadiah">
+        <div class="wheel" id="wheel" role="img" aria-label="Roda hadiah">
+          <img class="base" src="assets/wheel.png" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="prizes" aria-labelledby="hadiahTitle">
+    <h2 id="hadiahTitle">Hadiah yang bisa kamu bawa pulang</h2>
+    <p>Semakin sering beli, semakin banyak kesempatan menang.</p>
+    <div class="grid" id="prizeGrid"></div>
+  </section>
+
+  <ol class="steps">
+    <li>Beli es kami dan cari kode redeem di kemasannya.</li>
+    <li>Isi kode, nama, dan nomor WhatsApp di atas, lalu tekan Putar.</li>
+    <li>Menang? Tekan tombol WhatsApp dan tunjukkan layar hadiahmu ke admin.</li>
+  </ol>
+
+  <footer>Syarat &amp; ketentuan berlaku. Hadiah dapat berubah sewaktu-waktu oleh penyelenggara.</footer>
+</div>
+
+<!-- hasil -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="card">
+    <div class="prize-img" id="mImg"></div>
+    <h3 id="mTitle"></h3>
+    <div class="name" id="mName"></div>
+    <div class="code-chip" id="mCode"></div>
+    <p id="mText"></p>
+    <a class="btn wa" id="mWa" href="#" target="_blank" rel="noopener" style="display:block;text-decoration:none">Klaim lewat WhatsApp</a>
+    <button class="btn ghost" id="mClose" type="button">Tutup</button>
+  </div>
+</div>
+<canvas id="confetti"></canvas>
+
+<script>
+/* =====================  PENGATURAN  ===================== */
+const CONFIG = {
+  BRAND: 'Es Kami',                 // nama produk, tampil di pojok kiri atas
+  API_URL: '',                      // tempel URL Web App Google Apps Script di sini (lihat PANDUAN.md)
+  ADMIN_WA: '6281234567890',        // nomor WhatsApp admin, format 62xxx tanpa + dan tanpa 0 di depan
+  SPIN_MS: 6000                     // harus sama dengan transition di CSS (.wheel)
+};
+
+/* Urutan HARUS sama dengan baris di sheet "Hadiah" (baris 1 = Pajero, dst). Persentase peluang diatur di sheet, bukan di sini.
+   angle = titik tengah irisan di roda (derajat, searah jarum jam dari atas) */
+const PRIZES = [
+  {name:'Mitsubishi Pajero Sport', short:'Pajero',   img:'assets/pajero.png', angle:0,   tint:'#ffd3d6', big:true},
+  {name:'ZONK',                    short:'ZONK',     img:'assets/zonk.png',   angle:52,  tint:'#ffe2b8', zonk:true},
+  {name:'Es Gratis 1 Botol',       short:'Es Gratis',img:'assets/es.png',     angle:95,  tint:'#fff3b0'},
+  {name:'Pensil 2B (1 Box)',       short:'Pensil',   img:'assets/pensil.png', angle:135, tint:'#d4f5c4'},
+  {name:'Honda Vario',             short:'Vario',    img:'assets/vario.png',  angle:181, tint:'#c6efff', big:true},
+  {name:'Basreng Jumbo',           short:'Basreng',  img:'assets/basreng.png',angle:226, tint:'#d3e4ff'},
+  {name:'Buku Tulis Big Boss',     short:'Buku',     img:'assets/buku.png',   angle:267, tint:'#e5d6ff'},
+  {name:'Tiket Wisata',            short:'Tiket',    img:'assets/tiket.png',  angle:310, tint:'#ffd0ea'}
+];
+
+/* Hanya dipakai saat API_URL kosong (mode demo, tanpa Google Sheet). */
+const DEMO_WEIGHTS = [1,28,22,18,2,15,10,4];
+
+/* =====================  UI  ===================== */
+const $ = s => document.querySelector(s);
+const wheel = $('#wheel'), pointer = $('#pointer');
+document.title = 'Lucky Wheel ' + CONFIG.BRAND + ' – Putar & Menangkan Hadiah';
+$('#brandName').textContent = CONFIG.BRAND;
+if(!CONFIG.API_URL) $('#demoBadge').classList.add('on');
+
+// irisan hadiah di atas roda (ikut berputar)
+PRIZES.forEach(p=>{
+  const slot = document.createElement('div');
+  slot.className = 'slot';
+  slot.style.transform = `rotate(${p.angle}deg)`;
+  slot.innerHTML = `<span class="lbl">${p.short}</span><img class="ico" src="${p.img}" alt="">`;
+  wheel.appendChild(slot);
+});
+
+// daftar hadiah (tanpa duplikat ZONK)
+const grid = $('#prizeGrid');
+PRIZES.filter(p=>!p.zonk).forEach(p=>{
+  const d = document.createElement('div');
+  d.className = 'tile' + (p.big ? ' big' : '');
+  d.style.setProperty('--c', p.tint);
+  d.innerHTML = `<div class="pic"><img src="${p.img}" alt=""></div><b>${p.name}</b>`;
+  grid.appendChild(d);
+});
+
+/* =====================  PUTAR  ===================== */
+let rotation = 0, busy = false;
+
+function spinTo(index){
+  return new Promise(res=>{
+    const p = PRIZES[index];
+    const jitter = (Math.random()-.5)*22;               // biar tidak selalu tepat di tengah irisan
+    const target = (360 - p.angle - jitter + 360) % 360;
+    rotation = (Math.floor(rotation/360) + 7) * 360 + target;
+    wheel.style.transform = `rotate(${rotation}deg)`;
+    // ketukan penunjuk selama berputar
+    const t0 = performance.now(), dur = matchMedia('(prefers-reduced-motion:reduce)').matches ? 1200 : CONFIG.SPIN_MS;
+    let last = 0;
+    (function loop(){
+      const k = Math.min(1,(performance.now()-t0)/dur);
+      const ease = 1-Math.pow(1-k,3.2);
+      const now = Math.floor(ease*rotation/ (360/16));
+      if(now!==last){ last=now; pointer.classList.remove('tick'); void pointer.offsetWidth; pointer.classList.add('tick'); }
+      if(k<1) requestAnimationFrame(loop);
+    })();
+    setTimeout(res, dur+250);
+  });
+}
+
+function demoSpin(kode){
+  if(!/^DEMO/i.test(kode)) throw new Error('Mode demo: gunakan kode berawalan DEMO, misalnya DEMO-1234.');
+  const total = DEMO_WEIGHTS.reduce((a,b)=>a+b,0);
+  let r = Math.random()*total, i = 0;
+  for(; i<DEMO_WEIGHTS.length; i++){ r -= DEMO_WEIGHTS[i]; if(r<0) break; }
+  return {ok:true, segment:Math.min(i,PRIZES.length-1)};
+}
+
+async function claim(kode, nama, wa){
+  if(!CONFIG.API_URL) return demoSpin(kode);
+  const url = CONFIG.API_URL + '?action=spin&kode=' + encodeURIComponent(kode) +
+              '&nama=' + encodeURIComponent(nama) + '&wa=' + encodeURIComponent(wa);
+  const ctrl = new AbortController(); const to = setTimeout(()=>ctrl.abort(), 20000);
+  try{
+    const r = await fetch(url, {signal:ctrl.signal});
+    return await r.json();
+  }catch(e){
+    throw new Error('Koneksi bermasalah. Periksa internet kamu lalu coba lagi. Kodemu aman selama belum muncul hadiah.');
+  }finally{ clearTimeout(to); }
+}
+
+function normalizeWa(v){
+  let n = v.replace(/[^\d]/g,'');
+  if(n.startsWith('0')) n = '62'+n.slice(1);
+  if(n.startsWith('8')) n = '62'+n;
+  return n;
+}
+
+$('#form').addEventListener('submit', async ev=>{
+  ev.preventDefault();
+  if(busy) return;
+  const err = $('#err'); err.textContent = '';
+  const kode = $('#kode').value.trim().toUpperCase();
+  const nama = $('#nama').value.trim();
+  const wa = normalizeWa($('#wa').value);
+  if(kode.length < 4){ err.textContent = 'Masukkan kode redeem dari kemasan.'; $('#kode').focus(); return; }
+  if(nama.length < 2){ err.textContent = 'Isi nama kamu dulu.'; $('#nama').focus(); return; }
+  if(!/^62\d{8,13}$/.test(wa)){ err.textContent = 'Nomor WhatsApp belum benar. Contoh: 081234567890.'; $('#wa').focus(); return; }
+
+  busy = true;
+  const btn = $('#spinBtn'); btn.disabled = true; btn.textContent = 'MEMERIKSA KODE...';
+  try{
+    const res = await claim(kode, nama, wa);
+    if(!res || !res.ok) throw new Error((res && res.message) || 'Kode tidak bisa dipakai.');
+    btn.textContent = 'BERPUTAR...';
+    await spinTo(res.segment);
+    showResult(PRIZES[res.segment], nama, kode);
+  }catch(e){
+    err.textContent = e.message;
+    btn.disabled = false; btn.textContent = 'PUTAR!';
+    busy = false;
+  }
+});
+
+/* =====================  HASIL  ===================== */
+const modal = $('#modal');
+function showResult(p, nama, kode){
+  $('#mImg').innerHTML = `<img src="${p.img}" alt="">`;
+  $('#mCode').textContent = kode;
+  const wa = $('#mWa');
+  if(p.zonk){
+    $('#mTitle').textContent = 'Yah, ZONK!';
+    $('#mName').textContent = 'Belum beruntung, ' + nama;
+    $('#mText').textContent = 'Jangan menyerah. Beli es kami lagi dan coba putar dengan kode yang baru.';
+    wa.style.display = 'none';
+  }else{
+    $('#mTitle').textContent = 'Selamat, ' + nama + '!';
+    $('#mName').textContent = p.name;
+    $('#mText').textContent = 'Screenshot layar ini, lalu klaim hadiahmu ke admin lewat WhatsApp.';
+    const msg = `Halo admin, saya ${nama}. Kode ${kode} menang hadiah: ${p.name}. Mohon diproses ya.`;
+    wa.href = `https://wa.me/${CONFIG.ADMIN_WA}?text=${encodeURIComponent(msg)}`;
+    wa.style.display = 'block';
+    confetti();
+  }
+  modal.classList.add('open'); $('#mClose').focus();
+}
+function closeModal(){
+  modal.classList.remove('open');
+  busy = false;
+  const b = $('#spinBtn'); b.disabled = false; b.textContent = 'PUTAR!';
+  $('#kode').value = ''; $('#kode').focus();
+}
+$('#mClose').addEventListener('click', closeModal);
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && modal.classList.contains('open')) closeModal(); });
+
+/* =====================  KONFETI  ===================== */
+function confetti(){
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const c = $('#confetti'), x = c.getContext('2d');
+  c.width = innerWidth; c.height = innerHeight;
+  const colors = ['#ff4f8b','#ffc21a','#2bc4ff','#6ee04a','#8b3cff','#f52328'];
+  const bits = Array.from({length:140},()=>({
+    x:Math.random()*c.width, y:-20-Math.random()*c.height*.5,
+    w:6+Math.random()*7, h:10+Math.random()*8, vy:2.5+Math.random()*4, vx:-1.5+Math.random()*3,
+    r:Math.random()*6, vr:-.2+Math.random()*.4, c:colors[Math.floor(Math.random()*colors.length)]
+  }));
+  let frames = 0;
+  (function draw(){
+    x.clearRect(0,0,c.width,c.height);
+    bits.forEach(b=>{
+      b.x+=b.vx; b.y+=b.vy; b.r+=b.vr;
+      x.save(); x.translate(b.x,b.y); x.rotate(b.r); x.fillStyle=b.c; x.fillRect(-b.w/2,-b.h/2,b.w,b.h); x.restore();
+    });
+    if(++frames<260) requestAnimationFrame(draw); else x.clearRect(0,0,c.width,c.height);
+  })();
+}
+</script>
+</body>
+</html>
