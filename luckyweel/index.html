@@ -41,6 +41,10 @@ button,input,select{font-family:inherit}
 .chip{display:flex;align-items:center;gap:6px;background:#fff;color:var(--ink);border:3px solid var(--ink);border-radius:999px;
   padding:3px 12px 3px 8px;font-family:var(--fd);font-weight:800;font-size:1rem;cursor:pointer}
 .chip img{width:24px;height:auto}
+.hr{display:flex;align-items:center;gap:8px}
+.snd{width:42px;height:42px;border-radius:50%;background:#fff;border:3px solid var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;color:var(--ink)}
+.snd svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.snd.off{background:#f0d7df;color:#a9808c}
 .demo{display:none;background:var(--gold);border-bottom:3px solid var(--ink);text-align:center;font-weight:800;font-size:.8rem;padding:4px 10px}
 .demo.on{display:block}
 
@@ -164,7 +168,7 @@ p.s{margin:0 0 16px;color:var(--muted);font-weight:700;font-size:.95rem;line-hei
 <div class="app">
   <header class="bar">
     <div class="brand"><img src="assets/ticket.png" alt=""><span id="brandName">Es Kami</span></div>
-    <button class="chip" id="chip" type="button" aria-label="Lihat tiket"><img src="assets/ticket.png" alt=""><span id="chipN">0</span></button>
+    <div class="hr"><button class="snd" id="snd" type="button" aria-label="Suara" aria-pressed="true"></button><button class="chip" id="chip" type="button" aria-label="Lihat tiket"><img src="assets/ticket.png" alt=""><span id="chipN">0</span></button></div>
   </header>
   <div class="demo" id="demo">Mode demo: DEMO-1, DEMO-2, dst = kode terdaftar. Kode lain otomatis ZONK.</div>
 
@@ -264,7 +268,7 @@ p.s{margin:0 0 16px;color:var(--muted);font-weight:700;font-size:.95rem;line-hei
 <script>
 /* =====================  PENGATURAN  ===================== */
 const CONFIG = {
-  BRAND: 'Es Kami',   // nama produk
+  BRAND: 'Es Jelly POP',   // nama produk
   API_URL: 'https://script.google.com/macros/s/AKfycbxq8U4CyYW9nPi12s_M-_ke8UJZEkEaNrby-N4CoscRtzueI2kvmbGHRl-ubvv3u68xgg/exec',        // URL Web App Google Apps Script (lihat PANDUAN.md)
   SPIN_MS: 6000       // samakan dengan transition di CSS (.wheel)
 };
@@ -301,6 +305,109 @@ document.title = 'Lucky Wheel ' + CONFIG.BRAND;
 $('#brandName').textContent = CONFIG.BRAND;
 if(!CONFIG.API_URL) $('#demo').classList.add('on');
 
+
+/* =====================  SUARA (dibuat langsung oleh browser, tanpa file audio)  ===================== */
+const Snd = (()=>{
+  let ctx=null, master, bgmG, sfxG, noiseBuf, timer=null, step=0, nextT=0, on = store.get('lw_snd', true), ducked=false;
+  const mtof = m => 440*Math.pow(2,(m-69)/12);
+  function init(){
+    if(ctx) return true;
+    const AC = window.AudioContext || window.webkitAudioContext; if(!AC) return false;
+    ctx = new AC();
+    master = ctx.createGain(); master.gain.value = on ? 1 : 0; master.connect(ctx.destination);
+    bgmG = ctx.createGain(); bgmG.gain.value = .5; bgmG.connect(master);
+    sfxG = ctx.createGain(); sfxG.gain.value = .9; sfxG.connect(master);
+    noiseBuf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+    const d = noiseBuf.getChannelData(0); for(let i=0;i<d.length;i++) d[i] = Math.random()*2-1;
+    return true;
+  }
+  function tone(f,t,dur,type,vol,dest,slide){
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type; o.frequency.setValueAtTime(f,t);
+    if(slide) o.frequency.exponentialRampToValueAtTime(slide,t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+.012);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(dest||sfxG); o.start(t); o.stop(t+dur+.05);
+  }
+  function noise(t,dur,vol,f0,f1,type,dest){
+    const s = ctx.createBufferSource(); s.buffer = noiseBuf;
+    const fl = ctx.createBiquadFilter(); fl.type = type||'bandpass';
+    fl.frequency.setValueAtTime(f0,t); if(f1) fl.frequency.exponentialRampToValueAtTime(f1,t+dur);
+    const g = ctx.createGain(); g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+dur*.2); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    s.connect(fl); fl.connect(g); g.connect(dest||sfxG); s.start(t); s.stop(t+dur+.05);
+  }
+
+  /* --- musik latar: loop ceria 32 langkah, 150 bpm --- */
+  const CH = [[48,52,55],[45,48,52],[41,45,48],[43,47,50]];
+  const MEL = [0,2,1,2, 0,2,1,2];
+  function playStep(i,t){
+    const ch = CH[Math.floor(i/8)%4], k = i%8;
+    if(k===0||k===4) tone(mtof(ch[0]-12),t,.28,'triangle',.5,bgmG);
+    const n = ch[MEL[k]] + 12 + ((i%16===14)?12:0);
+    tone(mtof(n),t,.16,'square',.07,bgmG);
+    if(k%2===1) noise(t,.04,.05,7000,null,'highpass',bgmG);
+    if(k===0) noise(t,.07,.12,180,60,'lowpass',bgmG);
+  }
+  function sched(){
+    if(!ctx || ctx.state!=='running') return;
+    while(nextT < ctx.currentTime + .25){ playStep(step,nextT); nextT += .2; step = (step+1)%32; }
+  }
+  function startBgm(){
+    if(!ctx || timer) return;
+    nextT = ctx.currentTime + .1; step = 0;
+    timer = setInterval(sched, 60);
+  }
+  function stopBgm(){ if(timer){ clearInterval(timer); timer = null; } }
+
+  const api = {
+    get on(){ return on; },
+    unlock(){
+      if(!init()) return;
+      if(ctx.state==='suspended') ctx.resume();
+      if(on) startBgm();
+    },
+    toggle(){
+      on = !on; store.set('lw_snd', on);
+      if(on){ api.unlock(); if(ctx) master.gain.setTargetAtTime(1,ctx.currentTime,.05); }
+      else if(ctx){ master.gain.setTargetAtTime(0,ctx.currentTime,.05); }
+      return on;
+    },
+    ok(){ return ctx && on && ctx.state==='running'; },
+    duck(v){ if(!ctx) return; ducked = v; bgmG.gain.setTargetAtTime(v ? .12 : .5, ctx.currentTime, .25); },
+    tap(){ if(!api.ok()) return; const t=ctx.currentTime; tone(520,t,.07,'square',.16); tone(780,t+.04,.07,'square',.12); },
+    tick(){ if(!api.ok()) return; const t=ctx.currentTime; tone(1500,t,.03,'square',.14); noise(t,.02,.1,3000,null,'highpass'); },
+    whoosh(){ if(!api.ok()) return; const t=ctx.currentTime; noise(t,1.4,.28,250,3200,'bandpass'); tone(180,t,1.2,'sawtooth',.06,null,720); },
+    ding(){ if(!api.ok()) return; const t=ctx.currentTime; [784,1047,1319].forEach((f,i)=>tone(f,t+i*.08,.35,'triangle',.22)); },
+    win(){
+      if(!api.ok()) return; const t=ctx.currentTime + .05;
+      [523,659,784,1047].forEach((f,i)=>{ tone(f,t+i*.11,.22,'square',.14); tone(f/2,t+i*.11,.22,'triangle',.2); });
+      [523,659,784,1047].forEach(f=>tone(f,t+.5,1.1,'triangle',.18));
+      [1568,2093,2637,3136].forEach((f,i)=>tone(f,t+.55+i*.09,.3,'sine',.08));
+      noise(t+.45,.5,.16,2000,9000,'bandpass');
+    },
+    zonk(){
+      if(!api.ok()) return; const t=ctx.currentTime + .05;
+      [[392,.28],[370,.28],[349,.28]].forEach((n,i)=>tone(n[0],t+i*.3,n[1],'sawtooth',.14,null,n[0]*.97));
+      tone(294,t+.9,.9,'sawtooth',.16,null,220);
+      tone(147,t+.9,.9,'triangle',.2,null,110);
+    }
+  };
+  document.addEventListener('visibilitychange', ()=>{
+    if(!ctx) return;
+    if(document.hidden) ctx.suspend(); else if(on) ctx.resume();
+  });
+  return api;
+})();
+['pointerdown','touchend','keydown'].forEach(ev => document.addEventListener(ev, () => Snd.unlock(), {passive:true}));
+document.addEventListener('click', e => { if(e.target.closest('.btn,.nb,.fab,.chip')) Snd.tap(); });
+
+const sndBtn = $('#snd');
+const ICON_ON  = '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+const ICON_OFF = '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>';
+function paintSnd(){ sndBtn.innerHTML = Snd.on ? ICON_ON : ICON_OFF; sndBtn.classList.toggle('off', !Snd.on); sndBtn.setAttribute('aria-pressed', Snd.on); }
+sndBtn.addEventListener('click', () => { Snd.toggle(); paintSnd(); if(Snd.on) Snd.tap(); });
+paintSnd();
+
 /* =====================  RODA  ===================== */
 const wheel = $('#wheel'), pointer = $('#pointer');
 PRIZES.forEach(p=>{
@@ -321,11 +428,12 @@ function spinTo(index){
     rotation = (Math.floor(rotation/360) + 7) * 360 + target;
     const dur = reduce() ? 1200 : CONFIG.SPIN_MS;
     wheel.style.transform = 'rotate(' + rotation + 'deg)';
+    Snd.whoosh();
     const t0 = performance.now(); let last = 0;
     (function loop(){
       const k = Math.min(1,(performance.now()-t0)/dur);
       const now = Math.floor((1-Math.pow(1-k,3.2))*rotation/22.5);
-      if(now !== last){ last = now; pointer.classList.remove('tick'); void pointer.offsetWidth; pointer.classList.add('tick'); }
+      if(now !== last){ last = now; pointer.classList.remove('tick'); void pointer.offsetWidth; pointer.classList.add('tick'); Snd.tick(); }
       if(k<1) requestAnimationFrame(loop);
     })();
     setTimeout(res, dur + 250);
@@ -436,7 +544,7 @@ $('#redeemForm').addEventListener('submit', async ev => {
   b.disabled = true; b.textContent = 'MEMERIKSA...';
   const res = await api('redeem', {kode:kode});
   if(!res || !res.ok){ err.textContent = (res && res.message) || 'Kode tidak bisa dipakai.'; b.disabled = false; b.textContent = 'TUKAR KODE'; return; }
-  tickets.push(kode); save(); render();
+  tickets.push(kode); save(); render(); Snd.ding();
   $('#okCode').textContent = kode; $('#okTotal').textContent = tickets.length;
   $('#rForm').style.display = 'none'; $('#rOk').style.display = 'block';
 });
@@ -461,9 +569,10 @@ async function doSpin(){
   if(PRIZES[h.seg].zonk) h.claimed = true;
   history.unshift(h); save();
   b.textContent = 'BERPUTAR...';
+  Snd.duck(true);
   await spinTo(res.segment);
   busy = false; render();
-  showResult(h);
+  showResult(h, true);
 }
 $('#spinBtn').addEventListener('click', doSpin);
 $('#tkList').addEventListener('click', e => { if(e.target.closest('[data-spin]')){ goTab('home'); setTimeout(doSpin, 200); } });
@@ -472,8 +581,9 @@ $('#histList').addEventListener('click', e => {
 });
 
 /* =====================  HASIL & FORM KLAIM  ===================== */
-function showResult(h){
+function showResult(h, fresh){
   const p = PRIZES[h.seg];
+  if(fresh){ if(p.zonk) Snd.zonk(); else Snd.win(); setTimeout(()=>Snd.duck(false), 2600); } else Snd.duck(false);
   $('#mImg').innerHTML = '<img src="' + p.img + '" alt="">';
   if(p.zonk){
     $('#mTitle').textContent = 'Yah, ZONK!';
