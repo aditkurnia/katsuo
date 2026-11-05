@@ -268,8 +268,8 @@ p.s{margin:0 0 16px;color:var(--muted);font-weight:700;font-size:.95rem;line-hei
 <script>
 /* =====================  PENGATURAN  ===================== */
 const CONFIG = {
-  BRAND: 'Es Jelly POP',   // nama produk
-  API_URL: 'https://script.google.com/macros/s/AKfycbxq8U4CyYW9nPi12s_M-_ke8UJZEkEaNrby-N4CoscRtzueI2kvmbGHRl-ubvv3u68xgg/exec',        // URL Web App Google Apps Script (lihat PANDUAN.md)
+  BRAND: 'Es Kami',   // nama produk
+  API_URL: '',        // URL Web App Google Apps Script (lihat PANDUAN.md)
   SPIN_MS: 6000       // samakan dengan transition di CSS (.wheel)
 };
 const TINGKAT = ['10','11'];
@@ -282,7 +282,7 @@ const PRIZES = [
   {name:'Es Gratis 1 Botol',       short:'Es Gratis',img:'assets/es.png',      angle:95,  tint:'#fff3b0'},
   {name:'Pensil 2B (1 Box)',       short:'Pensil',   img:'assets/pensil.png',  angle:135, tint:'#d4f5c4'},
   {name:'Honda Vario',             short:'Vario',    img:'assets/vario.png',   angle:181, tint:'#c6efff', big:true},
-  {name:'Basreng Jumbo',           short:'Basreng',  img:'assets/basreng.png', angle:226, tint:'#d3e4ff'},
+  {name:'Basreng',           short:'Basreng',  img:'assets/basreng.png', angle:226, tint:'#d3e4ff'},
   {name:'Buku Tulis Big Boss',     short:'Buku',     img:'assets/buku.png',    angle:267, tint:'#e5d6ff'},
   {name:'Tiket Wisata',            short:'Tiket',    img:'assets/tiket.png',   angle:310, tint:'#ffd0ea'}
 ];
@@ -350,6 +350,7 @@ const Snd = (()=>{
   }
   function sched(){
     if(!ctx || ctx.state!=='running') return;
+    if(nextT < ctx.currentTime - .5) nextT = ctx.currentTime + .05;   // setelah jeda/suspend, jangan mengejar ketinggalan
     while(nextT < ctx.currentTime + .25){ playStep(step,nextT); nextT += .2; step = (step+1)%32; }
   }
   function startBgm(){
@@ -398,7 +399,7 @@ const Snd = (()=>{
   });
   return api;
 })();
-['pointerdown','touchend','keydown'].forEach(ev => document.addEventListener(ev, () => Snd.unlock(), {passive:true}));
+['pointerdown','touchstart','touchend','click','keydown'].forEach(ev => document.addEventListener(ev, () => Snd.unlock(), {passive:true}));
 document.addEventListener('click', e => { if(e.target.closest('.btn,.nb,.fab,.chip')) Snd.tap(); });
 
 const sndBtn = $('#snd');
