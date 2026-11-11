@@ -218,7 +218,7 @@ function renderRecent(items) {
   if (usedList.length === 0) {
     recentContainer.innerHTML = `
       <div class="empty-state">
-        <div class="empty-icon">📱</div>
+        <div class="empty-icon"><i class="bi bi-phone"></i></div>
         <h4>Belum Ada HP Terdaftar</h4>
         <p>Kode yang sudah diaktivasi siswa di aplikasi akan otomatis muncul di sini.</p>
       </div>
@@ -257,7 +257,7 @@ function renderKeysList(items) {
   if (filtered.length === 0) {
     keysContainer.innerHTML = `
       <div class="empty-state">
-        <div class="empty-icon">🔍</div>
+        <div class="empty-icon"><i class="bi bi-search"></i></div>
         <h4>Tidak Ada Kode Ditemukan</h4>
         <p>Coba gunakan kata kunci pencarian lain atau buat kode aktivasi baru.</p>
       </div>
@@ -297,46 +297,46 @@ function createKeyCardElement(item) {
     </div>
 
     <div class="key-user-name">
-      <span>👤</span>
+      <i class="bi bi-person-fill"></i>
       <span>${escapeHtml(item.name || "Tanpa Catatan")}</span>
     </div>
 
     <div class="key-meta-box">
       <div class="key-meta-row">
-        <span class="meta-label">ID HP Terdaftar:</span>
+        <span class="meta-label"><i class="bi bi-phone"></i> ID HP Terdaftar:</span>
         <span class="meta-val ${isUsed ? 'highlight' : ''}">${escapeHtml(item.deviceId || "— Belum Ada —")}</span>
       </div>
       <div class="key-meta-row">
-        <span class="meta-label">Tipe Perangkat:</span>
+        <span class="meta-label"><i class="bi bi-cpu"></i> Tipe Perangkat:</span>
         <span class="meta-val">${escapeHtml(item.deviceModel || "—")}</span>
       </div>
       <div class="key-meta-row">
-        <span class="meta-label">Tgl Aktivasi:</span>
+        <span class="meta-label"><i class="bi bi-calendar3"></i> Tgl Aktivasi:</span>
         <span class="meta-val">${escapeHtml(item.date || "—")}</span>
       </div>
     </div>
 
     <div class="card-actions">
       <button class="btn-action btn-copy" onclick="copyCode('${escapeHtml(item.code)}')">
-        📋 Salin
+        <i class="bi bi-clipboard"></i> Salin
       </button>
 
       <button class="btn-action btn-wa" onclick="shareToWhatsApp('${escapeHtml(item.code)}', '${escapeHtml(item.name)}')">
-        💬 Kirim WA
+        <i class="bi bi-whatsapp"></i> Kirim WA
       </button>
 
       ${isUsed ? `
         <button class="btn-action btn-reset" onclick="resetDevice('${escapeHtml(item.code)}')">
-          🔄 Ganti HP
+          <i class="bi bi-arrow-repeat"></i> Ganti HP
         </button>
       ` : ''}
 
       <button class="btn-action" onclick="toggleStatus('${escapeHtml(item.code)}')">
-        ${isDisabled ? '🟢 Aktifkan' : '⛔ Nonaktif'}
+        ${isDisabled ? '<i class="bi bi-check2-circle text-green"></i> Aktifkan' : '<i class="bi bi-slash-circle text-rose"></i> Nonaktif'}
       </button>
 
       <button class="btn-action btn-danger" onclick="deleteCode('${escapeHtml(item.code)}')">
-        🗑 Hapus
+        <i class="bi bi-trash3-fill"></i> Hapus
       </button>
     </div>
   `;
@@ -664,7 +664,18 @@ function showToast(message, type = "default") {
   const toastContainer = document.getElementById("toastContainer");
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
-  toast.innerHTML = `<span>${escapeHtml(message)}</span>`;
+
+  let iconHtml = '<i class="bi bi-info-circle-fill"></i>';
+  if (type === "success") {
+    iconHtml = '<i class="bi bi-check-circle-fill" style="color: var(--accent-green);"></i>';
+  } else if (type === "error") {
+    iconHtml = '<i class="bi bi-exclamation-triangle-fill" style="color: var(--accent-rose);"></i>';
+  }
+
+  // Strip leading unicode emoji if present
+  const cleanMsg = message.replace(/^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]\s*/u, '');
+
+  toast.innerHTML = `${iconHtml} <span>${escapeHtml(cleanMsg)}</span>`;
   toastContainer.appendChild(toast);
 
   setTimeout(() => {

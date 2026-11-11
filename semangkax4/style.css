@@ -137,9 +137,11 @@ body {
   transform: scale(0.92);
 }
 
-.btn-icon .icon {
-  width: 18px;
-  height: 18px;
+.btn-icon .icon,
+.btn-icon i {
+  font-size: 18px;
+  line-height: 1;
+  display: inline-flex;
 }
 
 .connection-pill {
@@ -300,9 +302,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 20px;
   flex-shrink: 0;
 }
+
+.stat-total .stat-icon i { color: #38BDF8; }
+.stat-used .stat-icon i { color: #818CF8; }
+.stat-available .stat-icon i { color: #34D399; }
+.stat-disabled .stat-icon i { color: #F87171; }
 
 .stat-data {
   display: flex;
@@ -426,8 +433,8 @@ body {
   left: 14px;
   top: 50%;
   transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
+  font-size: 15px;
+  line-height: 1;
   color: var(--text-muted);
   pointer-events: none;
 }
@@ -933,9 +940,9 @@ body {
 }
 
 .nav-icon {
-  width: 22px;
-  height: 22px;
-  stroke: currentColor;
+  font-size: 20px;
+  line-height: 1;
+  display: inline-flex;
 }
 
 .nav-label {
@@ -954,7 +961,8 @@ body {
 }
 
 .nav-item.active .nav-icon {
-  stroke-width: 2.5;
+  color: var(--primary-hover);
+  transform: scale(1.08);
 }
 
 /* Center Highlight Button (TikTok Plus Style) */
@@ -971,9 +979,9 @@ body {
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.nav-action-btn .nav-icon-action svg {
-  width: 22px;
-  height: 22px;
+.nav-action-btn .nav-icon-action i {
+  font-size: 20px;
+  line-height: 1;
 }
 
 .nav-action-btn:active .nav-icon-action {
@@ -1147,4 +1155,61 @@ body {
   .stats-grid {
     grid-template-columns: repeat(4, 1fr);
   }
+}
+
+/* ==========================================================================
+   BOOTSTRAP ICONS ENHANCEMENTS
+   ========================================================================== */
+.brand-icon i {
+  color: #38BDF8;
+  font-size: 24px;
+}
+
+.notice-icon i {
+  color: var(--accent-amber);
+  font-size: 22px;
+}
+
+.key-user-name i {
+  color: var(--primary);
+  font-size: 15px;
+  margin-right: 6px;
+}
+
+.key-meta-row .meta-label i {
+  font-size: 13px;
+  margin-right: 4px;
+  color: var(--text-muted);
+}
+
+.btn-action i {
+  font-size: 13px;
+}
+
+.btn-primary i,
+.btn-secondary i {
+  font-size: 14px;
+  margin-right: 4px;
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.empty-icon i {
+  font-size: 42px;
+  color: var(--text-muted);
+  display: inline-block;
+}
+
+.toast i {
+  font-size: 16px;
+  flex-shrink: 0;
+  display: inline-flex;
+}
+
+.text-green {
+  color: var(--accent-green) !important;
+}
+
+.text-rose {
+  color: var(--accent-rose) !important;
 }
